@@ -189,117 +189,91 @@ th {
   color: #555;
   padding: 24px 16px 40px;
 }
+/* ===== DESKTOP TABLE (DEFAULT) ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-/* =====================================================
-   MOBILE FIX — HILANGKAN GARIS ANEH KOLOM STATUS
-   ===================================================== */
+thead {
+  display: table-header-group;
+}
+
+tbody tr {
+  display: table-row;
+}
+
+th, td {
+  display: table-cell;
+}
 @media (max-width: 600px) {
 
-  .hero {
-    padding: 24px 16px;
+  /* GRID STAT JADI SATU KOLOM */
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
   }
 
-  .hero-logo {
-    width: 88px;
-    margin-bottom: 14px;
-  }
-
-  .hero h1 {
-    font-size: 26px;
-    margin-bottom: 8px;
-  }
-
-  .badge {
-    font-size: 12px;
-    padding: 8px 14px;
-    margin-bottom: 20px;
-  }
-
-  .input-card {
-    padding: 24px 20px;
-    border-radius: 16px;
-  }
-
-  .input-card h2 {
-    font-size: 18px;
-  }
-
-  input[type="text"] {
-    padding: 12px 14px;
-    font-size: 14px;
-  }
-
-  button {
-    padding: 14px;
-    font-size: 15px;
-  }
-
-  /* ===== TABLE MOBILE FIX ===== */
-  .table-wrapper {
-    overflow-x: hidden;
-  }
-
-  .col-status {
-    display: none;
-  }
-
-  table {
-    width: 100%;
-  }
-}
-.badge-ulang {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 4px 8px;
-  background: #e35d5d;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 999px;
-}
-/* =========================================
-   MOBILE FINAL OPTIMIZATION
-   ========================================= */
-@media (max-width: 600px) {
-  table, thead, tbody, tr, td {
+  /* ===== TABLE → CARD ===== */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
-    width: 100%;
   }
 
   thead {
     display: none;
   }
 
-  table tr {
-    background: #fff;
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 14px;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+  tbody tr {
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
   }
 
-  table td {
+  td {
     border: none;
     padding: 6px 0;
+    font-size: 14px;
   }
 
-  table td::before {
+  td::before {
     content: attr(data-label);
+    display: block;
     font-size: 12px;
     font-weight: 600;
     color: #2c6ba0;
-    display: block;
     margin-bottom: 2px;
   }
 
+  /* STATUS ULANG BADGE */
   .status-ulang {
     display: inline-block;
-    background: #ffeded;
-    color: #c0392b;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 6px 12px;
+    background: #e35d5d;
+    color: #fff;
+    padding: 4px 10px;
     border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
     margin-top: 6px;
   }
+
+  /* HERO & BADGE */
+  .hero-hasil {
+    padding: 28px 16px;
+  }
+
+  .badge {
+    margin: 12px auto 0;
+  }
+
+  .card {
+    padding: 20px;
+  }
 }
+
