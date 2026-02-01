@@ -93,13 +93,42 @@
     </table>
   </div>
 </section>
-<!-- CARD 5: ANALISIS MATA KULIAH -->
-<section class="card" id="analisis-mk">
-  <h2>Analisis Mata Kuliah</h2>
-  <ul id="hasil-analisis">
-    <li>Memproses data nilai...</li>
-  </ul>
+  <section class="card">
+  <h2>Mata Kuliah Wajib Diulang</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Kode MK</th>
+        <th>Nama Mata Kuliah</th>
+        <th>SKS</th>
+        <th>Nilai</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tabel-wajib-ulang"></tbody>
+  </table>
 </section>
+
+<section class="card">
+  <h2>Disarankan Mengulang Salah Satu</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Kode MK</th>
+        <th>Nama Mata Kuliah</th>
+        <th>SKS</th>
+        <th>Nilai</th>
+      </tr>
+    </thead>
+    <tbody id="tabel-disarankan"></tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2>Keterangan</h2>
+  <ul id="keterangan-analisis"></ul>
+</section>
+
 
 </main>
 
@@ -187,45 +216,63 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.appendChild(tr);
       });
 
-      // ===== ANALISIS NILAI =====
-      let jumlahC = 0;
-      const hasilAnalisis = [];
+// ===== ANALISIS NILAI (VERSI TABEL) =====
+const tbodyWajib = document.getElementById("tabel-wajib-ulang");
+const tbodySaran = document.getElementById("tabel-disarankan");
+const ketList = document.getElementById("keterangan-analisis");
 
-      rows.forEach(r => {
-        const nilai = r.c[3] ? r.c[3].v : "";
+tbodyWajib.innerHTML = "";
+tbodySaran.innerHTML = "";
+ketList.innerHTML = "";
 
-        if (nilai === "E") {
-          hasilAnalisis.push(
-            "Terdapat mata kuliah dengan nilai E yang wajib diulang."
-          );
-        } else if (nilai === "D") {
-          hasilAnalisis.push(
-            "Terdapat mata kuliah dengan nilai D yang disarankan untuk diulang."
-          );
-        } else if (nilai === "C") {
-          jumlahC++;
-        }
-      });
+let jumlahC = 0;
+let adaE = false;
 
-      if (jumlahC > 2) {
-        hasilAnalisis.push(
-          "Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK."
-        );
-      }
+rows.forEach(r => {
+  const kode = r.c[0]?.v || "";
+  const nama = r.c[1]?.v || "";
+  const sks  = r.c[2]?.v || "";
+  const nilai = r.c[3]?.v || "";
 
-      const ul = document.getElementById("hasil-analisis");
-      ul.innerHTML = "";
+  // Nilai E → wajib diulang
+  if (nilai === "E") {
+    adaE = true;
+    tbodyWajib.innerHTML += `
+      <tr>
+        <td>${kode}</td>
+        <td>${nama}</td>
+        <td>${sks}</td>
+        <td>${nilai}</td>
+        <td><strong>Ulang</strong></td>
+      </tr>
+    `;
+  }
 
-      if (hasilAnalisis.length === 0) {
-        ul.innerHTML = "<li>Tidak ada mata kuliah bermasalah.</li>";
-      } else {
-        hasilAnalisis.forEach(item => {
-          const li = document.createElement("li");
-          li.textContent = item;
-          ul.appendChild(li);
-        });
-      }
-    })
+  // Nilai C → kandidat ulang
+  if (nilai === "C") {
+    jumlahC++;
+    tbodySaran.innerHTML += `
+      <tr>
+        <td>${kode}</td>
+        <td>${nama}</td>
+        <td>${sks}</td>
+        <td>${nilai}</td>
+      </tr>
+    `;
+  }
+});
+
+// ===== KETERANGAN =====
+if (adaE) {
+  ketList.innerHTML +=
+    "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
+}
+
+if (jumlahC > 2) {
+  ketList.innerHTML +=
+    "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.</li>";
+}
+
     .catch(err => {
       console.error(err);
       const tbody = document.querySelector("#tabel-nilai tbody");
