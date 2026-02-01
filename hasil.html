@@ -169,75 +169,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch(url)
     .then(res => res.text())
-    .then(text => {
-      const json = JSON.parse(
-        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
-      );
+.then(text => {
+  const json = JSON.parse(
+    text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+  );
 
-      const rows = json.table.rows;
-      const tbody = document.querySelector("#tabel-nilai tbody");
-      tbody.innerHTML = "";
+  const rows = json.table.rows;
+  const tbody = document.querySelector("#tabel-nilai tbody");
+  tbody.innerHTML = "";
 
-      if (!rows || rows.length === 0) {
-        tbody.innerHTML =
-          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
-        return;
-      }
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML =
+      "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
+    return;
+  }
 
-      rows.forEach(r => {
-        const tr = document.createElement("tr");
+  // ===== RENDER TABEL =====
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
 
-        r.c.forEach(cell => {
-          const td = document.createElement("td");
-          td.textContent = cell ? cell.v : "-";
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      const tbody = document.querySelector("#tabel-nilai tbody");
-      tbody.innerHTML =
-        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
+    r.c.forEach(cell => {
+      const td = document.createElement("td");
+      td.textContent = cell ? cell.v : "-";
+      tr.appendChild(td);
     });
-});
-  // ===== ANALISIS NILAI =====
-let jumlahC = 0;
-const analisis = [];
 
-rows.forEach(r => {
-  const nilai = r.c[3] ? r.c[3].v : "";
+    tbody.appendChild(tr);
+  });
 
-  if (nilai === "E") {
-    analisis.push("Mata kuliah dengan nilai E wajib diulang.");
-  } 
-  else if (nilai === "D") {
-    analisis.push("Mata kuliah dengan nilai D disarankan untuk diulang.");
-  } 
-  else if (nilai === "C") {
-    jumlahC++;
+  // ===== ANALISIS NILAI (DI SINI TEMPAT YANG BENAR) =====
+  let jumlahC = 0;
+  const hasilAnalisis = [];
+
+  rows.forEach(r => {
+    const nilai = r.c[3] ? r.c[3].v : "";
+
+    if (nilai === "E") {
+      hasilAnalisis.push("Terdapat mata kuliah dengan nilai E yang wajib diulang.");
+    } else if (nilai === "D") {
+      hasilAnalisis.push("Terdapat mata kuliah dengan nilai D yang disarankan untuk diulang.");
+    } else if (nilai === "C") {
+      jumlahC++;
+    }
+  });
+
+  if (jumlahC > 2) {
+    hasilAnalisis.push(
+      "Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK."
+    );
+  }
+
+  const ul = document.getElementById("hasil-analisis");
+  ul.innerHTML = "";
+
+  if (hasilAnalisis.length === 0) {
+    ul.innerHTML = "<li>Tidak ada mata kuliah bermasalah.</li>";
+  } else {
+    hasilAnalisis.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      ul.appendChild(li);
+    });
   }
 });
-
-if (jumlahC > 2) {
-  analisis.push("Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.");
-}
-
-const ul = document.getElementById("hasil-analisis");
-ul.innerHTML = "";
-
-if (analisis.length === 0) {
-  ul.innerHTML = "<li>Tidak ada mata kuliah bermasalah.</li>";
-} else {
-  analisis.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    ul.appendChild(li);
-  });
-}
-
 </script>
 
 </body>
