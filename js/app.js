@@ -1,11 +1,7 @@
-// === OPEN SHEET API (NO CORS, NO PROXY) ===
-const DATA_MAHASISWA =
-  "https://opensheet.elk.sh/2PACX-1vSH8qdOOgYTTzUpMKZx_5E6b_qCKxRZbz1M1-bs7ZGJYKDRvyZTFO14jrzK5woIzA/Sheet1";
-
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("cekBtn");
 
-  btn.addEventListener("click", async () => {
+  btn.addEventListener("click", () => {
     const nimInput = document.getElementById("nimInput").value.trim();
 
     if (!nimInput) {
@@ -13,29 +9,51 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    try {
-      const response = await fetch(DATA_MAHASISWA);
-      const data = await response.json();
+    // Spreadsheet ID (BUKAN yang 2PACX, tapi ID asli)
+    const SPREADSHEET_ID = "PASTE_ID_DI_SINI";
 
-      const mahasiswa = data.find(
-        m => m.NIM && m.NIM.toString().trim() === nimInput
-      );
+    // Nama sheet HARUS PERSIS
+    const SHEET_NAME = "PASTE_NAMA_SHEET_DI_SINI";
 
-      if (!mahasiswa) {
-        alert("NIM tidak ditemukan di database");
-        return;
-      }
+    const query = `
+      select A, B, C, D, E
+      where A = '${nimInput}'
+    `;
 
-      alert(
-        "NIM ditemukan!\n\n" +
-        "Nama: " + mahasiswa.Nama + "\n" +
-        "Jurusan: " + mahasiswa.Jurusan + "\n" +
-        "IPK Terakhir: " + mahasiswa["IPK Terakhir"]
-      );
+    const url =
+      "https://docs.google.com/spreadsheets/d/" +
+      SPREADSHEET_ID +
+      "/gviz/tq?sheet=" +
+      encodeURIComponent(SHEET_NAME) +
+      "&tq=" +
+      encodeURIComponent(query);
 
-    } catch (err) {
-      console.error(err);
-      alert("Gagal membaca database");
-    }
+    fetch(url)
+      .then(res => res.text())
+      .then(text => {
+        const json = JSON.parse(
+          text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+        );
+
+        const rows = json.table.rows;
+
+        if (!rows || rows.length === 0) {
+          alert("NIM tidak ditemukan di database");
+          return;
+        }
+
+        const data = rows[0].c;
+
+        alert(
+          "NIM ditemukan!\n\n" +
+          "Nama: " + data[1].v + "\n" +
+          "Jurusan: " + data[2].v + "\n" +
+          "IPK Terakhir: " + data[4].v
+        );
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Gagal membaca database");
+      });
   });
 });
