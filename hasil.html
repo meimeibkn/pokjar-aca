@@ -260,6 +260,85 @@ document.addEventListener("DOMContentLoaded", () => {
     ketList.innerHTML +=
       "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.</li>";
   }
+  <!-- CARD: SIMULASI STRATEGI IPK -->
+<section class="card">
+  <h2>Simulasi Strategi Lulus Dengan IPK 3,5</h2>
+
+  <p>
+    Simulasi ini membantu memperkirakan target <strong>IPS rata-rata</strong> 
+    yang perlu dicapai pada semester-semester berikutnya agar 
+    <strong>IPK akhir mencapai 3,5</strong>.
+  </p>
+
+  <!-- Ringkasan Cepat -->
+  <div class="grid-3">
+    <div class="stat">
+      <span class="stat-label">IPK Saat Ini</span>
+      <span class="stat-value" id="sim-ipk">2,14</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">SKS Lulus</span>
+      <span class="stat-value" id="sim-sks-lulus">11</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Sisa SKS</span>
+      <span class="stat-value" id="sim-sks-sisa">134</span>
+    </div>
+  </div>
+
+  <!-- Target IPK -->
+  <div class="badge" style="margin:16px 0;">
+    Target IPK Akhir: <strong>3,5</strong>
+  </div>
+
+  <!-- Tabel Simulasi -->
+  <h3>Simulasi Target IPS Rata-rata</h3>
+
+  <div class="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Skenario Studi</th>
+          <th>Semester Tersisa</th>
+          <th>Target IPS Rata-rata</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lulus 8 Semester</td>
+          <td>7 Semester</td>
+          <td id="ips-8">3,65</td>
+        </tr>
+        <tr>
+          <td>Lulus 9 Semester</td>
+          <td>8 Semester</td>
+          <td id="ips-9">3,45</td>
+        </tr>
+        <tr>
+          <td>Lulus 10 Semester</td>
+          <td>9 Semester</td>
+          <td id="ips-10">3,30</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Interpretasi Sistem -->
+  <h3>Interpretasi Sistem</h3>
+  <ul id="interpretasi-sistem">
+    <li>Target IPS 3,65 tergolong cukup berat dan memerlukan perbaikan nilai E dan D.</li>
+    <li>Target IPS 3,45 masih realistis dengan pengaturan beban SKS yang baik.</li>
+    <li>Target IPS 3,30 merupakan skenario paling aman untuk menjaga konsistensi IPK.</li>
+  </ul>
+
+  <!-- Tombol Aksi -->
+  <div style="margin-top:24px;">
+    <a href="#" class="btn-primary" style="display:block; text-align:center;">
+      Konsultasi Strategi Kuliah Selanjutnya
+    </a>
+  </div>
+</section>
+
 })
 .catch(err => {
   console.error(err);
