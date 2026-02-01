@@ -179,6 +179,123 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // ================= SESSION =================
+  var raw = sessionStorage.getItem("pokjarMahasiswa");
+  if (!raw) {
+    alert("Data tidak ditemukan, silakan ulangi dari awal.");
+    location.href = "index.html";
+    return;
+  }
+  var m = JSON.parse(raw);
+  var nim = m.nim;
+
+  // ================= FETCH NILAI =================
+  var SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
+  var SHEET = "Nilai Mahasiswa";
+
+  var query = "select E, F, G, H where A = '" + nim + "'";
+
+  var url =
+    "https://docs.google.com/spreadsheets/d/" +
+    SPREADSHEET_ID +
+    "/gviz/tq?sheet=" +
+    encodeURIComponent(SHEET) +
+    "&tq=" +
+    encodeURIComponent(query);
+
+  fetch(url)
+    .then(function (res) { return res.text(); })
+    .then(function (text) {
+
+      var json = JSON.parse(
+        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+      );
+
+      var rows = json.table.rows;
+
+      var tbodyNilai = document.querySelector("#tabel-nilai tbody");
+      var tbodyWajib = document.getElementById("tabel-wajib-ulang");
+      var tbodySaran = document.getElementById("tabel-disarankan");
+      var ket = document.getElementById("keterangan-analisis");
+
+      tbodyNilai.innerHTML = "";
+      tbodyWajib.innerHTML = "";
+      tbodySaran.innerHTML = "";
+      ket.innerHTML = "";
+
+      if (!rows || rows.length === 0) {
+        tbodyNilai.innerHTML =
+          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
+        return;
+      }
+
+      var jumlahC = 0;
+      var adaE = false;
+
+      for (var i = 0; i < rows.length; i++) {
+        var c = rows[i].c;
+
+        var kode  = c[0]?.v || "-";
+        var nama  = c[1]?.v || "-";
+        var sks   = c[2]?.v || "-";
+        var nilai = c[3]?.v || "-";
+
+        // ===== TABEL NILAI =====
+        tbodyNilai.innerHTML +=
+          "<tr>" +
+            "<td>" + kode + "</td>" +
+            "<td>" + nama + "</td>" +
+            "<td>" + sks + "</td>" +
+            "<td>" + nilai + "</td>" +
+          "</tr>";
+
+        // ===== WAJIB DIULANG =====
+        if (nilai === "E") {
+          adaE = true;
+          tbodyWajib.innerHTML +=
+            "<tr>" +
+              "<td>" + kode + "</td>" +
+              "<td>" + nama + "</td>" +
+              "<td>" + sks + "</td>" +
+              "<td>" + nilai + "</td>" +
+            "</tr>";
+        }
+
+        // ===== DISARANKAN =====
+        if (nilai === "C") {
+          jumlahC++;
+          tbodySaran.innerHTML +=
+            "<tr>" +
+              "<td>" + kode + "</td>" +
+              "<td>" + nama + "</td>" +
+              "<td>" + sks + "</td>" +
+              "<td>" + nilai + "</td>" +
+            "</tr>";
+        }
+      }
+
+      // ===== KETERANGAN =====
+      if (adaE) {
+        ket.innerHTML +=
+          "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
+      }
+      if (jumlahC > 2) {
+        ket.innerHTML +=
+          "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
+      }
+
+    })
+    .catch(function (err) {
+      console.error(err);
+      document.querySelector("#tabel-nilai tbody").innerHTML =
+        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
+    });
+
+});
+</script>
 
 </body>
 </html>
