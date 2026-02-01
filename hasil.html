@@ -2,22 +2,76 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Hasil Strategi Kuliah</title>
+  <title>Hasil Strategi Kuliah | Pokjar Aca</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<h1>Data Mahasiswa</h1>
-<pre id="output"></pre>
+<header class="hero hero-hasil">
+  <div class="hero-content">
+    <h1>Strategi Kuliah Personal</h1>
+    <span class="badge">Target IPK 3,5</span>
+  </div>
+</header>
+
+<main class="hasil-container">
+
+  <!-- CARD 1: DATA MAHASISWA -->
+  <section class="card">
+    <h2>Data Mahasiswa</h2>
+    <div class="grid-2">
+      <div><strong>Nama</strong><br><span id="nama"></span></div>
+      <div><strong>NIM</strong><br><span id="nim"></span></div>
+      <div><strong>Jurusan</strong><br><span id="jurusan"></span></div>
+      <div><strong>Fakultas</strong><br><span id="fakultas"></span></div>
+    </div>
+  </section>
+
+  <!-- CARD 2: RINGKASAN AKADEMIK -->
+  <section class="card">
+    <h2>Ringkasan Akademik</h2>
+    <div class="grid-2">
+      <div class="stat">
+        <span class="stat-label">IPK Terakhir</span>
+        <span class="stat-value" id="ipk"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARD 3: KONDISI SAAT INI -->
+  <section class="card">
+    <h2>Kondisi Akademik Saat Ini</h2>
+    <p>
+      Berdasarkan data akademik terakhir, sistem akan membantu menyusun
+      strategi pengambilan mata kuliah dan target IPS semester berikutnya
+      agar IPK akhir dapat mencapai <strong>3,5</strong>.
+    </p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>
+    * Hasil simulasi ini bersifat pendampingan akademik dan
+    <strong>bukan merupakan keputusan resmi Universitas Terbuka</strong>.
+  </p>
+</footer>
 
 <script>
   const data = sessionStorage.getItem("pokjarMahasiswa");
 
   if (!data) {
-    document.body.innerHTML = "<p>Data tidak ditemukan. Silakan kembali ke halaman awal.</p>";
+    alert("Data tidak ditemukan. Silakan kembali ke halaman awal.");
+    window.location.href = "index.html";
   } else {
-    const mahasiswa = JSON.parse(data);
-    document.getElementById("output").textContent =
-      JSON.stringify(mahasiswa, null, 2);
+    const m = JSON.parse(data);
+    document.getElementById("nama").textContent = m.nama;
+    document.getElementById("nim").textContent = m.nim;
+    document.getElementById("jurusan").textContent = m.jurusan;
+    document.getElementById("fakultas").textContent = m.fakultas;
+    document.getElementById("ipk").textContent = m.ipk;
   }
 </script>
 
