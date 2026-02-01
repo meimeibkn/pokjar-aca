@@ -17,10 +17,9 @@
   </div>
 </header>
 
-<!-- KONTEN -->
 <main class="hasil-container">
 
-  <!-- CARD 1: DATA MAHASISWA -->
+  <!-- DATA MAHASISWA -->
   <section class="card">
     <h2>Data Mahasiswa</h2>
     <div class="grid-2">
@@ -30,44 +29,22 @@
     </div>
   </section>
 
-  <!-- CARD 2: RINGKASAN AKADEMIK -->
+  <!-- RINGKASAN -->
   <section class="card">
     <h2>Ringkasan Akademik</h2>
     <div class="grid-2">
-      <div class="stat">
-        <span class="stat-label">IPK Terakhir</span>
-        <span class="stat-value" id="ipk">-</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">IPS Terakhir</span>
-        <span class="stat-value" id="ips">-</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Total SKS Ditempuh</span>
-        <span class="stat-value" id="sks-total">-</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Total SKS Lulus</span>
-        <span class="stat-value" id="sks-lulus">-</span>
-      </div>
+      <div class="stat"><span class="stat-label">IPK</span><span class="stat-value" id="ipk">-</span></div>
+      <div class="stat"><span class="stat-label">IPS</span><span class="stat-value" id="ips">-</span></div>
+      <div class="stat"><span class="stat-label">SKS Ditempuh</span><span class="stat-value" id="sks-total">-</span></div>
+      <div class="stat"><span class="stat-label">SKS Lulus</span><span class="stat-value" id="sks-lulus">-</span></div>
     </div>
   </section>
 
-  <!-- CARD 3: KETERANGAN -->
-  <section class="card">
-    <h2>Kondisi Akademik Saat Ini</h2>
-    <p>
-      Berdasarkan data akademik terakhir, sistem membantu menyusun
-      strategi pengambilan mata kuliah dan target IPS semester berikutnya
-      agar IPK akhir mencapai <strong>3,5</strong>.
-    </p>
-  </section>
-
-  <!-- CARD 4: NILAI SEMESTER TERAKHIR -->
+  <!-- NILAI -->
   <section class="card">
     <h2>Nilai Semester Terakhir</h2>
     <div class="table-wrapper">
-      <table id="tabel-nilai" class="table">
+      <table class="table" id="tabel-nilai">
         <thead>
           <tr>
             <th>Kode MK</th>
@@ -77,85 +54,71 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td colspan="4">Memuat data nilai...</td></tr>
+          <tr><td colspan="4">Memuat data...</td></tr>
         </tbody>
       </table>
     </div>
   </section>
-<!-- CARD 5: WAJIB DIULANG -->
-<section class="card">
-  <h2>Mata Kuliah Wajib Diulang</h2>
 
-  <div class="table-wrapper">
-    <table class="table">
-      <thead>
-  <tr>
-    <th>Kode MK</th>
-    <th>Nama Mata Kuliah</th>
-    <th>SKS</th>
-    <th>Nilai</th>
-  </tr>
-</thead>
-      <tbody id="tabel-wajib-ulang">
-        <!-- DIISI OLEH JAVASCRIPT -->
-      </tbody>
-    </table>
-  </div>
-</section>
-
-  <!-- CARD 6: DISARANKAN -->
+  <!-- WAJIB DIULANG -->
   <section class="card">
-    <h2>Disarankan Mengulang Salah Satu</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Kode MK</th>
-          <th>Nama Mata Kuliah</th>
-          <th>SKS</th>
-          <th>Nilai</th>
-        </tr>
-      </thead>
-      <tbody id="tabel-disarankan"></tbody>
-    </table>
+    <h2>Mata Kuliah Wajib Diulang</h2>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Kode MK</th>
+            <th>Nama Mata Kuliah</th>
+            <th>SKS</th>
+            <th>Nilai</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-wajib-ulang"></tbody>
+      </table>
+    </div>
   </section>
 
-  <!-- CARD 7: KETERANGAN ANALISIS -->
+  <!-- DISARANKAN -->
+  <section class="card">
+    <h2>Disarankan Mengulang Salah Satu</h2>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Kode MK</th>
+            <th>Nama Mata Kuliah</th>
+            <th>SKS</th>
+            <th>Nilai</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-disarankan"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- KETERANGAN -->
   <section class="card">
     <h2>Keterangan</h2>
     <ul id="keterangan-analisis"></ul>
   </section>
 
-  <!-- CARD 8: SIMULASI STRATEGI IPK (HTML SAJA) -->
+  <!-- SIMULASI IPK -->
   <section class="card">
     <h2>Simulasi Strategi Lulus Dengan IPK 3,5</h2>
 
-    <p>
-      Simulasi ini memperkirakan target <strong>IPS rata-rata</strong> yang perlu
-      dicapai pada semester berikutnya agar IPK akhir mencapai <strong>3,5</strong>.
-    </p>
-
     <div class="grid-3">
-      <div class="stat">
-        <span class="stat-label">IPK Saat Ini</span>
-        <span class="stat-value" id="sim-ipk">-</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">SKS Lulus</span>
-        <span class="stat-value" id="sim-sks-lulus">-</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">Sisa SKS</span>
-        <span class="stat-value" id="sim-sks-sisa">-</span>
-      </div>
+      <div class="stat"><span class="stat-label">IPK Saat Ini</span><span class="stat-value" id="sim-ipk">-</span></div>
+      <div class="stat"><span class="stat-label">SKS Lulus</span><span class="stat-value" id="sim-sks-lulus">-</span></div>
+      <div class="stat"><span class="stat-label">Sisa SKS</span><span class="stat-value" id="sim-sks-sisa">-</span></div>
     </div>
 
     <div class="table-wrapper" style="margin-top:16px;">
       <table class="table">
         <thead>
           <tr>
-            <th>Skenario Studi</th>
+            <th>Skenario</th>
             <th>Semester Tersisa</th>
-            <th>Target IPS Rata-rata</th>
+            <th>Target IPS</th>
           </tr>
         </thead>
         <tbody>
@@ -169,194 +132,93 @@
 
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
-  <p>
-    * Hasil simulasi ini bersifat pendampingan akademik dan
-    <strong>bukan merupakan keputusan resmi Universitas Terbuka</strong>.
-  </p>
+  * Hasil simulasi bersifat pendampingan akademik, bukan keputusan resmi Universitas Terbuka.
 </footer>
 
-<!-- SCRIPT 1: SESSION STORAGE -->
+<!-- ===================== SCRIPT ===================== -->
 <script>
-var data = sessionStorage.getItem("pokjarMahasiswa");
-if (!data) {
-  alert("Data tidak ditemukan. Silakan ulangi dari halaman awal.");
+/* ===== SESSION DATA ===== */
+var raw = sessionStorage.getItem("pokjarMahasiswa");
+if (!raw) {
+  alert("Data tidak ditemukan");
   window.location.href = "index.html";
 }
-var m = JSON.parse(data);
+var m = JSON.parse(raw);
 
-document.getElementById("nama").textContent = m.nama;
-document.getElementById("nim").textContent = m.nim;
-document.getElementById("jurusan").textContent = m.jurusan;
-document.getElementById("ipk").textContent = m.ipk;
-document.getElementById("ips").textContent = m.ips;
-document.getElementById("sks-total").textContent = m.sksTotal;
-document.getElementById("sks-lulus").textContent = m.sksLulus;
+// isi ringkasan
+nama.textContent = m.nama;
+nim.textContent = m.nim;
+jurusan.textContent = m.jurusan;
+ipk.textContent = m.ipk;
+ips.textContent = m.ips;
+sks-total.textContent = m.sksTotal;
+sks-lulus.textContent = m.sksLulus;
 
-// untuk simulasi nanti
-document.getElementById("sim-ipk").textContent = m.ipk;
-document.getElementById("sim-sks-lulus").textContent = m.sksLulus;
-document.getElementById("sim-sks-sisa").textContent = 145 - m.sksLulus;
-</script>
+// simulasi dasar
+sim-ipk.textContent = m.ipk;
+sim-sks-lulus.textContent = m.sksLulus;
+sim-sks-sisa.textContent = 145 - m.sksLulus;
 
-  <script>
-// ===== SIMULASI TARGET IPS =====
-var TARGET_IPK = 3.5;
-var TOTAL_SKS = 145;
-
-var ipkSaatIni = parseFloat(m.ipk);
-var sksLulus = parseInt(m.sksLulus);
-
-var nilaiMutuSaatIni = ipkSaatIni * sksLulus;
-var nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
-var nilaiMutuSisa = nilaiMutuTarget - nilaiMutuSaatIni;
-var sksSisa = TOTAL_SKS - sksLulus;
-
-// IPS rata-rata yang dibutuhkan
-var ipsTarget = nilaiMutuSisa / sksSisa;
-
-// Pembulatan 2 angka desimal
-function round2(x) {
-  return Math.round(x * 100) / 100;
-}
-
-// Isi ke tabel simulasi
-document.getElementById("ips-8").textContent = round2(ipsTarget);
-document.getElementById("ips-9").textContent = round2(ipsTarget);
-document.getElementById("ips-10").textContent = round2(ipsTarget);
-</script>
-
-<!-- SCRIPT 2: FETCH NILAI + ANALISIS -->
-<script>
+/* ===== FETCH NILAI ===== */
 document.addEventListener("DOMContentLoaded", function () {
 
-  var data = sessionStorage.getItem("pokjarMahasiswa");
-  if (!data) return;
-
-  var m = JSON.parse(data);
-  var nim = m.nim;
-
-  var SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
-  var SHEET = "Nilai Mahasiswa";
-
-  var query =
-    "select E, F, G, H where A = '" + nim + "'";
-
   var url =
-    "https://docs.google.com/spreadsheets/d/" +
-    SPREADSHEET_ID +
-    "/gviz/tq?sheet=" +
-    encodeURIComponent(SHEET) +
-    "&tq=" +
-    encodeURIComponent(query);
+    "https://docs.google.com/spreadsheets/d/1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR/gviz/tq" +
+    "?sheet=Nilai%20Mahasiswa&tq=" +
+    encodeURIComponent("select E,F,G,H where A='" + m.nim + "'");
 
   fetch(url)
-    .then(function (res) { return res.text(); })
-    .then(function (text) {
-
-      var json = JSON.parse(
-        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
-      );
-
+    .then(r => r.text())
+    .then(t => {
+      var json = JSON.parse(t.substring(t.indexOf("{"), t.lastIndexOf("}") + 1));
       var rows = json.table.rows;
+
       var tbody = document.querySelector("#tabel-nilai tbody");
-      tbody.innerHTML = "";
-
-      if (!rows || rows.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
-        return;
-      }
-
-      for (var i = 0; i < rows.length; i++) {
-        var tr = document.createElement("tr");
-        var c = rows[i].c;
-        for (var j = 0; j < c.length; j++) {
-          var td = document.createElement("td");
-          td.textContent = c[j] && c[j].v ? c[j].v : "-";
-          tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-      }
-
       var wajib = document.getElementById("tabel-wajib-ulang");
       var saran = document.getElementById("tabel-disarankan");
       var ket = document.getElementById("keterangan-analisis");
 
-      wajib.innerHTML = "";
-      saran.innerHTML = "";
-      ket.innerHTML = "";
+      tbody.innerHTML = wajib.innerHTML = saran.innerHTML = ket.innerHTML = "";
 
-      var jumlahC = 0;
-      var adaE = false;
+      var jumlahC = 0, adaE = false;
 
-      for (var i = 0; i < rows.length; i++) {
-        var c = rows[i].c;
-        var kode = c[0] && c[0].v ? c[0].v : "";
-        var nama = c[1] && c[1].v ? c[1].v : "";
-        var sks  = c[2] && c[2].v ? c[2].v : "";
-        var nilai = c[3] && c[3].v ? c[3].v : "";
+      rows.forEach(r => {
+        var c = r.c.map(x => x ? x.v : "-");
 
-        if (nilai === "E") {
+        tbody.innerHTML += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td></tr>`;
+
+        if (c[3] === "E") {
           adaE = true;
-          wajib.innerHTML +=
-            "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks +
-            "</td><td>" + nilai + "</td><td><strong>Ulang</strong></td></tr>";
+          wajib.innerHTML += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>E</td></tr>`;
         }
 
-        if (nilai === "C") {
+        if (c[3] === "C") {
           jumlahC++;
-          saran.innerHTML +=
-            "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks +
-            "</td><td>" + nilai + "</td></tr>";
+          saran.innerHTML += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>C</td></tr>`;
         }
+      });
+
+      if (adaE) ket.innerHTML += "<li>Nilai E wajib diulang.</li>";
+      if (jumlahC > 2) ket.innerHTML += "<li>Nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
+
+      /* ===== SIMULASI IPS ===== */
+      var ipk = parseFloat(m.ipk);
+      var sks = parseInt(m.sksLulus);
+      var totalSKS = 145;
+      var targetIPK = 3.5;
+
+      var sisaNilai = (targetIPK * totalSKS) - (ipk * sks);
+
+      function hitungIPS(sem) {
+        return (sisaNilai / (sem * 22)).toFixed(2);
       }
 
-      if (adaE) {
-        ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai E yang wajib diulang.</li>";
-      }
-      if (jumlahC > 2) {
-        ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
-      }
+      ips-8.textContent = hitungIPS(7);
+      ips-9.textContent = hitungIPS(8);
+      ips-10.textContent = hitungIPS(9);
     });
 });
-</script>
-<script>
-/* ===============================
-   SIMULASI TARGET IPS
-   =============================== */
-
-// DATA DASAR
-var ipkSaatIni = parseFloat(m.ipk);        // contoh: 2.14
-var sksLulus = parseInt(m.sksLulus);       // contoh: 11
-var totalSKS = 145;                        // SYARAT LULUS UT
-var targetIPK = 3.5;
-var sisaSKS = totalSKS - sksLulus;
-
-// RATA-RATA SKS AMAN PER SEMESTER
-var rataSKS = 22;
-
-// HITUNG NILAI MUTU
-var nilaiMutuSekarang = ipkSaatIni * sksLulus;
-var nilaiMutuTarget = targetIPK * totalSKS;
-var sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSekarang;
-
-// FUNGSI HITUNG TARGET IPS
-function hitungTargetIPS(semesterTersisa) {
-  var totalSKSDitempuh = semesterTersisa * rataSKS;
-  var ips = sisaNilaiMutu / totalSKSDitempuh;
-  return ips.toFixed(2);
-}
-
-// ISI KE HTML
-document.getElementById("sim-ipk").textContent = ipkSaatIni.toFixed(2);
-document.getElementById("sim-sks-lulus").textContent = sksLulus;
-document.getElementById("sim-sks-sisa").textContent = sisaSKS;
-
-// SKENARIO
-document.getElementById("ips-8").textContent  = hitungTargetIPS(7);
-document.getElementById("ips-9").textContent  = hitungTargetIPS(8);
-document.getElementById("ips-10").textContent = hitungTargetIPS(9);
 </script>
 
 </body>
