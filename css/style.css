@@ -197,4 +197,28 @@ button:hover {
   color: #555;
   padding: 24px 16px 40px;
 }
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: #f0f4ff;
+}
+
+th, td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+}
+
+th {
+  color: #192f52;
+  font-weight: 600;
+}
 
