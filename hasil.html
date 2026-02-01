@@ -163,22 +163,39 @@ document.getElementById("sim-sks-lulus").textContent = m.sksLulus;
 document.getElementById("sim-sks-sisa").textContent = 145 - parseInt(m.sksLulus);
 
 /* ===== FETCH NILAI & ANALISIS ===== */
+<script>
 document.addEventListener("DOMContentLoaded", function () {
 
+  var data = sessionStorage.getItem("pokjarMahasiswa");
+  if (!data) return;
+
+  var m = JSON.parse(data);
+  var nim = m.nim;
+
+  var SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
+  var SHEET = "Nilai Mahasiswa";
+
+  var query = "select E, F, G, H where A = '" + nim + "'";
+
   var url =
-    "https://docs.google.com/spreadsheets/d/1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR/gviz/tq" +
-    "?sheet=Nilai%20Mahasiswa&tq=" +
-    encodeURIComponent("select E,F,G,H where A='" + m.nim + "'");
+    "https://docs.google.com/spreadsheets/d/" +
+    SPREADSHEET_ID +
+    "/gviz/tq?sheet=" +
+    encodeURIComponent(SHEET) +
+    "&tq=" +
+    encodeURIComponent(query);
 
   fetch(url)
-    .then(function (res) { return res.text(); })
+    .then(function (res) {
+      return res.text();
+    })
     .then(function (text) {
 
       var json = JSON.parse(
         text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
       );
 
-      var rows = json.table.rows || [];
+      var rows = json.table.rows;
 
       var tbodyNilai = document.querySelector("#tabel-nilai tbody");
       var tbodyWajib = document.getElementById("tabel-wajib-ulang");
@@ -190,67 +207,74 @@ document.addEventListener("DOMContentLoaded", function () {
       tbodySaran.innerHTML = "";
       ket.innerHTML = "";
 
+      if (!rows || rows.length === 0) {
+        tbodyNilai.innerHTML =
+          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
+        return;
+      }
+
       var jumlahC = 0;
       var adaE = false;
 
       for (var i = 0; i < rows.length; i++) {
         var c = rows[i].c;
-        var kode = c[0] && c[0].v ? c[0].v : "-";
-        var nama = c[1] && c[1].v ? c[1].v : "-";
-        var sks  = c[2] && c[2].v ? c[2].v : "-";
+
+        var kode  = c[0] && c[0].v ? c[0].v : "-";
+        var nama  = c[1] && c[1].v ? c[1].v : "-";
+        var sks   = c[2] && c[2].v ? c[2].v : "-";
         var nilai = c[3] && c[3].v ? c[3].v : "-";
 
- // ===== TABEL NILAI SEMESTER TERAKHIR =====
-tbodyNilai.innerHTML +=
-  "<tr>" +
-    "<td data-label='Kode MK'>" + kode + "</td>" +
-    "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-    "<td data-label='SKS'>" + sks + "</td>" +
-    "<td data-label='Nilai'>" + nilai + "</td>" +
-  "</tr>";
+        // ===== TABEL NILAI =====
+        tbodyNilai.innerHTML +=
+          "<tr>" +
+            "<td data-label='Kode MK'>" + kode + "</td>" +
+            "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
+            "<td data-label='SKS'>" + sks + "</td>" +
+            "<td data-label='Nilai'>" + nilai + "</td>" +
+          "</tr>";
 
-// ===== WAJIB DIULANG (NILAI E) =====
-if (nilai === "E") {
-  adaE = true;
-  tbodyWajib.innerHTML +=
-    "<tr>" +
-      "<td data-label='Kode MK'>" + kode + "</td>" +
-      "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-      "<td data-label='SKS'>" + sks + "</td>" +
-      "<td data-label='Nilai'>" + nilai + "</td>" +
-      "<td data-label='Status'><span class='status-ulang'>Ulang</span></td>" +
-    "</tr>";
-}
+        // ===== WAJIB DIULANG =====
+        if (nilai === "E") {
+          adaE = true;
+          tbodyWajib.innerHTML +=
+            "<tr>" +
+              "<td data-label='Kode MK'>" + kode + "</td>" +
+              "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
+              "<td data-label='SKS'>" + sks + "</td>" +
+              "<td data-label='Nilai'>" + nilai + "</td>" +
+              "<td data-label='Status'><span class='status-ulang'>Ulang</span></td>" +
+            "</tr>";
+        }
 
-// ===== DISARANKAN (NILAI C) =====
-if (nilai === "C") {
-  jumlahC++;
-  tbodySaran.innerHTML +=
-    "<tr>" +
-      "<td data-label='Kode MK'>" + kode + "</td>" +
-      "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-      "<td data-label='SKS'>" + sks + "</td>" +
-      "<td data-label='Nilai'>" + nilai + "</td>" +
-    "</tr>";
-}
-      /* ===== SIMULASI IPS ===== */
-      var ipkNow = parseFloat(m.ipk);
-      var sksLulus = parseInt(m.sksLulus);
-      var totalSKS = 145;
-      var targetIPK = 3.5;
-      var rataSKS = 22;
-
-      var sisaNilai =
-        (targetIPK * totalSKS) - (ipkNow * sksLulus);
-
-      function hitungIPS(semester) {
-        return (sisaNilai / (semester * rataSKS)).toFixed(2);
+        // ===== DISARANKAN =====
+        if (nilai === "C") {
+          jumlahC++;
+          tbodySaran.innerHTML +=
+            "<tr>" +
+              "<td data-label='Kode MK'>" + kode + "</td>" +
+              "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
+              "<td data-label='SKS'>" + sks + "</td>" +
+              "<td data-label='Nilai'>" + nilai + "</td>" +
+            "</tr>";
+        }
       }
 
-      document.getElementById("ips-8").textContent = hitungIPS(7);
-      document.getElementById("ips-9").textContent = hitungIPS(8);
-      document.getElementById("ips-10").textContent = hitungIPS(9);
+      if (adaE) {
+        ket.innerHTML +=
+          "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
+      }
+
+      if (jumlahC > 2) {
+        ket.innerHTML +=
+          "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
+      }
+    })
+    .catch(function (err) {
+      console.error(err);
+      document.querySelector("#tabel-nilai tbody").innerHTML =
+        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
     });
+
 });
 </script>
 
