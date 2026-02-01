@@ -92,3 +92,30 @@ button:hover {
   color: #e35d5d;
   font-size: 13px;
 }
+/* ===== HEADER LAYOUT ===== */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-left .logo {
+  width: 52px;
+  height: auto;
+}
+
+.header-right h1 {
+  margin-bottom: 6px;
+}
+
+/* ===== BADGE ===== */
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2c6ba0, #192f52);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
