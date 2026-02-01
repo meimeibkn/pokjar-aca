@@ -188,97 +188,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch(url)
     .then(res => res.text())
-    .then(text => {
-      const json = JSON.parse(
-        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
-      );
+.then(text => {
+  const json = JSON.parse(
+    text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+  );
 
-      const rows = json.table.rows;
-      const tbody = document.querySelector("#tabel-nilai tbody");
-      tbody.innerHTML = "";
+  const rows = json.table.rows;
+  const tbody = document.querySelector("#tabel-nilai tbody");
+  tbody.innerHTML = "";
 
-      if (!rows || rows.length === 0) {
-        tbody.innerHTML =
-          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
-        return;
-      }
-
-      // ===== RENDER TABEL =====
-      rows.forEach(r => {
-        const tr = document.createElement("tr");
-
-        r.c.forEach(cell => {
-          const td = document.createElement("td");
-          td.textContent = cell ? cell.v : "-";
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      });
-
-// ===== ANALISIS NILAI (VERSI TABEL) =====
-const tbodyWajib = document.getElementById("tabel-wajib-ulang");
-const tbodySaran = document.getElementById("tabel-disarankan");
-const ketList = document.getElementById("keterangan-analisis");
-
-tbodyWajib.innerHTML = "";
-tbodySaran.innerHTML = "";
-ketList.innerHTML = "";
-
-let jumlahC = 0;
-let adaE = false;
-
-rows.forEach(r => {
-const kode  = r.c[0] && r.c[0].v ? r.c[0].v : "";
-const nama  = r.c[1] && r.c[1].v ? r.c[1].v : "";
-const sks   = r.c[2] && r.c[2].v ? r.c[2].v : "";
-const nilai = r.c[3] && r.c[3].v ? r.c[3].v : "";
-
-  // Nilai E → wajib diulang
-  if (nilai === "E") {
-    adaE = true;
-    tbodyWajib.innerHTML += `
-      <tr>
-        <td>${kode}</td>
-        <td>${nama}</td>
-        <td>${sks}</td>
-        <td>${nilai}</td>
-        <td><strong>Ulang</strong></td>
-      </tr>
-    `;
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML =
+      "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
+    return;
   }
 
-  // Nilai C → kandidat ulang
-  if (nilai === "C") {
-    jumlahC++;
-    tbodySaran.innerHTML += `
-      <tr>
-        <td>${kode}</td>
-        <td>${nama}</td>
-        <td>${sks}</td>
-        <td>${nilai}</td>
-      </tr>
-    `;
+  // ===== RENDER TABEL NILAI =====
+  for (var i = 0; i < rows.length; i++) {
+    var tr = document.createElement("tr");
+    var c = rows[i].c;
+
+    for (var j = 0; j < c.length; j++) {
+      var td = document.createElement("td");
+      td.textContent = c[j] && c[j].v ? c[j].v : "-";
+      tr.appendChild(td);
+    }
+
+    tbody.appendChild(tr);
   }
+
+  // ===== ANALISIS NILAI (KODE KAMU) =====
+  var tbodyWajib = document.getElementById("tabel-wajib-ulang");
+  var tbodySaran = document.getElementById("tabel-disarankan");
+  var ketList = document.getElementById("keterangan-analisis");
+
+  tbodyWajib.innerHTML = "";
+  tbodySaran.innerHTML = "";
+  ketList.innerHTML = "";
+
+  var jumlahC = 0;
+  var adaE = false;
+
+  for (var i = 0; i < rows.length; i++) {
+    var c = rows[i].c;
+    var kode = c[0] && c[0].v ? c[0].v : "";
+    var nama = c[1] && c[1].v ? c[1].v : "";
+    var sks  = c[2] && c[2].v ? c[2].v : "";
+    var nilai = c[3] && c[3].v ? c[3].v : "";
+
+    if (nilai === "E") {
+      adaE = true;
+      tbodyWajib.innerHTML +=
+        "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks +
+        "</td><td>" + nilai + "</td><td><strong>Ulang</strong></td></tr>";
+    }
+
+    if (nilai === "C") {
+      jumlahC++;
+      tbodySaran.innerHTML +=
+        "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks +
+        "</td><td>" + nilai + "</td></tr>";
+    }
+  }
+
+  if (adaE) {
+    ketList.innerHTML +=
+      "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
+  }
+
+  if (jumlahC > 2) {
+    ketList.innerHTML +=
+      "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.</li>";
+  }
+})
+.catch(err => {
+  console.error(err);
+  const tbody = document.querySelector("#tabel-nilai tbody");
+  tbody.innerHTML =
+    "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
 });
-
-// ===== KETERANGAN =====
-if (adaE) {
-  ketList.innerHTML +=
-    "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
-}
-
-if (jumlahC > 2) {
-  ketList.innerHTML +=
-    "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.</li>";
-}
-
-    .catch(err => {
-      console.error(err);
-      const tbody = document.querySelector("#tabel-nilai tbody");
-      tbody.innerHTML =
-        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
-    });
 });
 </script>
 </body>
