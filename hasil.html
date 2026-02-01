@@ -200,22 +200,39 @@ document.addEventListener("DOMContentLoaded", function () {
         var sks  = c[2] && c[2].v ? c[2].v : "-";
         var nilai = c[3] && c[3].v ? c[3].v : "-";
 
-        tbodyNilai.innerHTML +=
-          "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks + "</td><td>" + nilai + "</td></tr>";
+ // ===== TABEL NILAI SEMESTER TERAKHIR =====
+tbodyNilai.innerHTML +=
+  "<tr>" +
+    "<td data-label='Kode MK'>" + kode + "</td>" +
+    "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
+    "<td data-label='SKS'>" + sks + "</td>" +
+    "<td data-label='Nilai'>" + nilai + "</td>" +
+  "</tr>";
 
-        if (nilai === "E") {
-          adaE = true;
-          tbodyWajib.innerHTML +=
-            "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks + "</td><td>E</td></tr>";
-        }
+// ===== WAJIB DIULANG (NILAI E) =====
+if (nilai === "E") {
+  adaE = true;
+  tbodyWajib.innerHTML +=
+    "<tr>" +
+      "<td data-label='Kode MK'>" + kode + "</td>" +
+      "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
+      "<td data-label='SKS'>" + sks + "</td>" +
+      "<td data-label='Nilai'>" + nilai + "</td>" +
+      "<td data-label='Status'><span class='status-ulang'>Ulang</span></td>" +
+    "</tr>";
+}
 
-        if (nilai === "C") {
-          jumlahC++;
-          tbodySaran.innerHTML +=
-            "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks + "</td><td>C</td></tr>";
-        }
-      }
-
+// ===== DISARANKAN (NILAI C) =====
+if (nilai === "C") {
+  jumlahC++;
+  tbodySaran.innerHTML +=
+    "<tr>" +
+      "<td data-label='Kode MK'>" + kode + "</td>" +
+      "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
+      "<td data-label='SKS'>" + sks + "</td>" +
+      "<td data-label='Nilai'>" + nilai + "</td>" +
+    "</tr>";
+}
       if (adaE) {
         ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai E yang wajib diulang.</li>";
       }
