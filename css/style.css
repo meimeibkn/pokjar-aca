@@ -350,3 +350,63 @@ th {
     padding: 20px 12px 28px;
   }
 }
+/* ===============================
+   MOBILE TABLE FIX (WAJIB)
+   =============================== */
+@media (max-width: 600px) {
+
+  .table-wrapper {
+    overflow: visible;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  table tr {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+  }
+
+  table td {
+    border: none;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+
+  /* Label kecil */
+  table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2c6ba0;
+    margin-bottom: 2px;
+  }
+
+  /* STATUS ULANG */
+  .status-ulang {
+    display: inline-block;
+    background: #ffeded;
+    color: #c0392b;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-top: 6px;
+    width: fit-content;
+  }
+}
