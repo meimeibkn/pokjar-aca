@@ -208,12 +208,6 @@ th, td {
 }
 @media (max-width: 600px) {
 
-  /* GRID STAT JADI SATU KOLOM */
-  .grid-2,
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
-
   /* ===== TABLE → CARD ===== */
   table,
   thead,
@@ -274,6 +268,101 @@ th, td {
 
   .card {
     padding: 20px;
+  }
+}
+/* ===============================
+   MOBILE OPTIMIZATION (FINAL)
+   =============================== */
+@media (max-width: 600px) {
+
+  /* ===== HERO ===== */
+  .hero-hasil {
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-block;
+    margin: 12px auto 0;
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+
+  /* ===== CARD ===== */
+  .card {
+    padding: 20px;
+  }
+
+  /* ===== STAT GRID ===== */
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat {
+    padding: 14px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
+
+  /* ===== TABLE → CARD ===== */
+  table,
+  thead,
+  tbody,
+  tr,
+  td {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  }
+
+  td {
+    border: none;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+
+  td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2c6ba0;
+    margin-bottom: 2px;
+  }
+
+  /* ===== STATUS BADGE ===== */
+  .status-ulang {
+    display: inline-block;
+    background: #e35d5d;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 6px;
   }
 }
 
