@@ -153,17 +153,68 @@ th {
   padding: 24px 16px 40px;
 }
 
-/* ================= MOBILE (TETAP TABEL) ================= */
+/* ===== TABLE (DESKTOP & MOBILE SAMA) ===== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 600px; /* penting agar kolom tidak turun */
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: #f0f4ff;
+}
+
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  color: #192f52;
+  font-weight: 600;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+}
+
+/* ===== BADGE ===== */
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2c6ba0, #192f52);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===== MOBILE ONLY (TIDAK UBAH STRUKTUR) ===== */
 @media (max-width: 600px) {
 
   .hero-hasil {
-    padding: 28px 16px;
+    padding: 24px 16px;
+    text-align: center;
   }
 
   .badge {
+    margin: 10px auto 0;
     font-size: 12px;
-    padding: 8px 14px;
-    margin-top: 12px;
+    padding: 6px 14px;
   }
 
   .card {
@@ -176,21 +227,7 @@ th {
     gap: 12px;
   }
 
-  .stat {
-    padding: 14px;
-  }
-
-  .stat-value {
-    font-size: 22px;
-  }
-
-  /* ⛔ JANGAN UBAH STRUKTUR TABEL */
-  table,
-  thead,
-  tbody,
-  tr,
-  th,
-  td {
-    display: table-cell;
+  table {
+    font-size: 13px;
   }
 }
