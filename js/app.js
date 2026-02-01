@@ -1,9 +1,11 @@
-// === LINK CSV GOOGLE SHEETS ===
+// === LINK CSV GOOGLE SHEETS (RAW) ===
 const RAW_CSV =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSH8qdOOgYTTzUpMKZx_5E6b_qCKxRZbz1M1-bs7ZGJYKDRvyZTFO14jrzK5woIzA/pub?gid=743569536&single=true&output=csv";
 
-// === CORS PROXY (AMAN UNTUK GITHUB PAGES) ===
-const CSV_MAHASISWA = "https://corsproxy.io/?" + encodeURIComponent(RAW_CSV);
+// === CORS PROXY (LEBIH STABIL) ===
+const CSV_MAHASISWA =
+  "https://api.allorigins.win/raw?url=" + encodeURIComponent(RAW_CSV);
+
 
 
 // === FUNGSI BACA CSV ===
