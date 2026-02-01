@@ -95,3 +95,47 @@ button:hover {
   color: #e35d5d;
   font-size: 13px;
 }
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 600px) {
+
+  .hero {
+    padding: 24px 16px;
+  }
+
+  .hero-logo {
+    width: 64px;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 8px 14px;
+    margin-bottom: 20px;
+  }
+
+  .input-card {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+
+  .input-card h2 {
+    font-size: 18px;
+  }
+
+  input[type="text"] {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+}
+
