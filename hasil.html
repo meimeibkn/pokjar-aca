@@ -9,7 +9,7 @@
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 <header class="hero hero-hasil">
   <div class="hero-content">
     <h1>Strategi Kuliah Personal</h1>
@@ -17,6 +17,7 @@
   </div>
 </header>
 
+<!-- ================= MAIN ================= -->
 <main class="hasil-container">
 
   <!-- DATA MAHASISWA -->
@@ -29,7 +30,7 @@
     </div>
   </section>
 
-  <!-- RINGKASAN -->
+  <!-- RINGKASAN AKADEMIK -->
   <section class="card">
     <h2>Ringkasan Akademik</h2>
     <div class="grid-2">
@@ -40,7 +41,7 @@
     </div>
   </section>
 
-  <!-- NILAI -->
+  <!-- NILAI SEMESTER TERAKHIR -->
   <section class="card">
     <h2>Nilai Semester Terakhir</h2>
     <div class="table-wrapper">
@@ -132,13 +133,14 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <footer class="footer">
-  * Hasil simulasi bersifat pendampingan akademik, bukan keputusan resmi Universitas Terbuka.
+  * Hasil simulasi bersifat pendampingan akademik dan bukan keputusan resmi Universitas Terbuka.
 </footer>
 
-<!-- ===================== SCRIPT ===================== -->
+<!-- ================= SCRIPT ================= -->
 <script>
-/* ===== SESSION DATA ===== */
+/* ===== AMBIL DATA SESSION ===== */
 var raw = sessionStorage.getItem("pokjarMahasiswa");
 if (!raw) {
   alert("Data tidak ditemukan");
@@ -146,21 +148,21 @@ if (!raw) {
 }
 var m = JSON.parse(raw);
 
-// isi ringkasan
-nama.textContent = m.nama;
-nim.textContent = m.nim;
-jurusan.textContent = m.jurusan;
-ipk.textContent = m.ipk;
-ips.textContent = m.ips;
-sks-total.textContent = m.sksTotal;
-sks-lulus.textContent = m.sksLulus;
+/* ===== ISI DATA MAHASISWA ===== */
+document.getElementById("nama").textContent = m.nama;
+document.getElementById("nim").textContent = m.nim;
+document.getElementById("jurusan").textContent = m.jurusan;
+document.getElementById("ipk").textContent = m.ipk;
+document.getElementById("ips").textContent = m.ips;
+document.getElementById("sks-total").textContent = m.sksTotal;
+document.getElementById("sks-lulus").textContent = m.sksLulus;
 
-// simulasi dasar
-sim-ipk.textContent = m.ipk;
-sim-sks-lulus.textContent = m.sksLulus;
-sim-sks-sisa.textContent = 145 - m.sksLulus;
+/* ===== SIMULASI RINGKAS ===== */
+document.getElementById("sim-ipk").textContent = m.ipk;
+document.getElementById("sim-sks-lulus").textContent = m.sksLulus;
+document.getElementById("sim-sks-sisa").textContent = 145 - parseInt(m.sksLulus);
 
-/* ===== FETCH NILAI ===== */
+/* ===== FETCH NILAI & ANALISIS ===== */
 document.addEventListener("DOMContentLoaded", function () {
 
   var url =
@@ -169,54 +171,75 @@ document.addEventListener("DOMContentLoaded", function () {
     encodeURIComponent("select E,F,G,H where A='" + m.nim + "'");
 
   fetch(url)
-    .then(r => r.text())
-    .then(t => {
-      var json = JSON.parse(t.substring(t.indexOf("{"), t.lastIndexOf("}") + 1));
-      var rows = json.table.rows;
+    .then(function (res) { return res.text(); })
+    .then(function (text) {
 
-      var tbody = document.querySelector("#tabel-nilai tbody");
-      var wajib = document.getElementById("tabel-wajib-ulang");
-      var saran = document.getElementById("tabel-disarankan");
+      var json = JSON.parse(
+        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+      );
+
+      var rows = json.table.rows || [];
+
+      var tbodyNilai = document.querySelector("#tabel-nilai tbody");
+      var tbodyWajib = document.getElementById("tabel-wajib-ulang");
+      var tbodySaran = document.getElementById("tabel-disarankan");
       var ket = document.getElementById("keterangan-analisis");
 
-      tbody.innerHTML = wajib.innerHTML = saran.innerHTML = ket.innerHTML = "";
+      tbodyNilai.innerHTML = "";
+      tbodyWajib.innerHTML = "";
+      tbodySaran.innerHTML = "";
+      ket.innerHTML = "";
 
-      var jumlahC = 0, adaE = false;
+      var jumlahC = 0;
+      var adaE = false;
 
-      rows.forEach(r => {
-        var c = r.c.map(x => x ? x.v : "-");
+      for (var i = 0; i < rows.length; i++) {
+        var c = rows[i].c;
+        var kode = c[0] && c[0].v ? c[0].v : "-";
+        var nama = c[1] && c[1].v ? c[1].v : "-";
+        var sks  = c[2] && c[2].v ? c[2].v : "-";
+        var nilai = c[3] && c[3].v ? c[3].v : "-";
 
-        tbody.innerHTML += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td></tr>`;
+        tbodyNilai.innerHTML +=
+          "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks + "</td><td>" + nilai + "</td></tr>";
 
-        if (c[3] === "E") {
+        if (nilai === "E") {
           adaE = true;
-          wajib.innerHTML += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>E</td></tr>`;
+          tbodyWajib.innerHTML +=
+            "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks + "</td><td>E</td></tr>";
         }
 
-        if (c[3] === "C") {
+        if (nilai === "C") {
           jumlahC++;
-          saran.innerHTML += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>C</td></tr>`;
+          tbodySaran.innerHTML +=
+            "<tr><td>" + kode + "</td><td>" + nama + "</td><td>" + sks + "</td><td>C</td></tr>";
         }
-      });
-
-      if (adaE) ket.innerHTML += "<li>Nilai E wajib diulang.</li>";
-      if (jumlahC > 2) ket.innerHTML += "<li>Nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
-
-      /* ===== SIMULASI IPS ===== */
-      var ipk = parseFloat(m.ipk);
-      var sks = parseInt(m.sksLulus);
-      var totalSKS = 145;
-      var targetIPK = 3.5;
-
-      var sisaNilai = (targetIPK * totalSKS) - (ipk * sks);
-
-      function hitungIPS(sem) {
-        return (sisaNilai / (sem * 22)).toFixed(2);
       }
 
-      ips-8.textContent = hitungIPS(7);
-      ips-9.textContent = hitungIPS(8);
-      ips-10.textContent = hitungIPS(9);
+      if (adaE) {
+        ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai E yang wajib diulang.</li>";
+      }
+      if (jumlahC > 2) {
+        ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
+      }
+
+      /* ===== SIMULASI IPS ===== */
+      var ipkNow = parseFloat(m.ipk);
+      var sksLulus = parseInt(m.sksLulus);
+      var totalSKS = 145;
+      var targetIPK = 3.5;
+      var rataSKS = 22;
+
+      var sisaNilai =
+        (targetIPK * totalSKS) - (ipkNow * sksLulus);
+
+      function hitungIPS(semester) {
+        return (sisaNilai / (semester * rataSKS)).toFixed(2);
+      }
+
+      document.getElementById("ips-8").textContent = hitungIPS(7);
+      document.getElementById("ips-9").textContent = hitungIPS(8);
+      document.getElementById("ips-10").textContent = hitungIPS(9);
     });
 });
 </script>
