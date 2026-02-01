@@ -118,9 +118,9 @@
   const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
   const SHEET_NILAI = "Nilai Mahasiswa";
 
- const query = `
+const query = `
   select D, E, C, F
-  where G = '${m.nim}'
+  where G contains '${m.nim}'
 `;
 
   const url =
