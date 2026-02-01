@@ -1,30 +1,7 @@
-// === LINK CSV GOOGLE SHEETS (RAW) ===
-const RAW_CSV =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSH8qdOOgYTTzUpMKZx_5E6b_qCKxRZbz1M1-bs7ZGJYKDRvyZTFO14jrzK5woIzA/pub?gid=743569536&single=true&output=csv";
+// === OPEN SHEET API (NO CORS, NO PROXY) ===
+const DATA_MAHASISWA =
+  "https://opensheet.elk.sh/2PACX-1vSH8qdOOgYTTzUpMKZx_5E6b_qCKxRZbz1M1-bs7ZGJYKDRvyZTFO14jrzK5woIzA/Sheet1";
 
-// === CORS PROXY (LEBIH STABIL) ===
-const CSV_MAHASISWA =
-  "https://api.allorigins.win/raw?url=" + encodeURIComponent(RAW_CSV);
-
-
-
-// === FUNGSI BACA CSV ===
-async function fetchCSV(url) {
-  const response = await fetch(url);
-  const text = await response.text();
-
-  return text
-    .trim()
-    .split("\n")
-    .map(row =>
-      row
-        .split(",")
-        .map(cell => cell.replace(/^"|"$/g, "").trim())
-    );
-}
-
-
-// === EVENT KLIK TOMBOL ===
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("cekBtn");
 
@@ -36,31 +13,29 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const data = await fetchCSV(CSV_MAHASISWA);
+    try {
+      const response = await fetch(DATA_MAHASISWA);
+      const data = await response.json();
 
-    const header = data[0];
-    const rows = data.slice(1);
+      const mahasiswa = data.find(
+        m => m.NIM && m.NIM.toString().trim() === nimInput
+      );
 
-   const nimIndex = header.findIndex(
-  h => h.toLowerCase().trim() === "nim"
-);
+      if (!mahasiswa) {
+        alert("NIM tidak ditemukan di database");
+        return;
+      }
 
+      alert(
+        "NIM ditemukan!\n\n" +
+        "Nama: " + mahasiswa.Nama + "\n" +
+        "Jurusan: " + mahasiswa.Jurusan + "\n" +
+        "IPK Terakhir: " + mahasiswa["IPK Terakhir"]
+      );
 
- const mahasiswa = rows.find(
-  row => row[nimIndex] && row[nimIndex].trim() === nimInput
-);
-
-
-    if (!mahasiswa) {
-      alert("NIM tidak ditemukan di database");
-      return;
+    } catch (err) {
+      console.error(err);
+      alert("Gagal membaca database");
     }
-
-    alert(
-      "NIM ditemukan!\n\n" +
-      "Nama: " + mahasiswa[header.indexOf("Nama")] + "\n" +
-      "Jurusan: " + mahasiswa[header.indexOf("Jurusan")] + "\n" +
-      "IPK Terakhir: " + mahasiswa[header.indexOf("IPK Terakhir")]
-    );
   });
 });
