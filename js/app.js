@@ -9,33 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // === KONFIGURASI FINAL ===
     const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
     const SHEET_NAME = "Database Mahasiswa";
 
-    // Asumsi urutan kolom di 'Database Mahasiswa':
-    // A = NIM
-    // B = Nama
-    // C = Jurusan
-    // D = Fakultas
-    // E = Status RPL
-    // F = Status SIPAS
-    // G = Semester Berjalan
-    // H = Semester Mendatang
-    // I = IPK Terakhir
-    // J = IPS Terakhir
-    // K = Total SKS Ditempuh
-    // L = Total SKS Lulus
-
     const query = `
-      select A, B, C, D, I
-      where A = '${nimInput}'
-      label
-        A 'NIM',
-        B 'Nama',
-        C 'Jurusan',
-        D 'Fakultas',
-        I 'IPK Terakhir'
+      select A, B, C, I, J, K, L
+      where A contains '${nimInput}'
     `;
 
     const url =
@@ -53,32 +32,29 @@ document.addEventListener("DOMContentLoaded", () => {
           text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
         );
 
-        const rows = json.table.rows;
-
-        if (!rows || rows.length === 0) {
+        if (!json.table.rows.length) {
           alert("NIM tidak ditemukan di database");
           return;
         }
 
-const mahasiswaData = {
-  nim: data[0].v,
-  nama: data[1].v,
-  jurusan: data[2].v,
-  ipk: data[3].v,
-  ips: data[4].v,
-  sksTotal: data[5].v,
-  sksLulus: data[6].v
-};
+        const data = json.table.rows[0].c;
 
+        const mahasiswaData = {
+          nim: data[0].v,
+          nama: data[1].v,
+          jurusan: data[2].v,
+          ipk: data[3].v,
+          ips: data[4].v,
+          sksTotal: data[5].v,
+          sksLulus: data[6].v
+        };
 
-// Simpan ke sessionStorage
-sessionStorage.setItem(
-  "pokjarMahasiswa",
-  JSON.stringify(mahasiswaData)
-);
+        sessionStorage.setItem(
+          "pokjarMahasiswa",
+          JSON.stringify(mahasiswaData)
+        );
 
-// Pindah ke halaman hasil
-window.location.href = "hasil.html";
+        window.location.href = "hasil.html";
       })
       .catch(err => {
         console.error(err);
