@@ -10,8 +10,17 @@ const CSV_MAHASISWA = "https://corsproxy.io/?" + encodeURIComponent(RAW_CSV);
 async function fetchCSV(url) {
   const response = await fetch(url);
   const text = await response.text();
-  return text.split("\n").map(row => row.split(","));
+
+  return text
+    .trim()
+    .split("\n")
+    .map(row =>
+      row
+        .split(",")
+        .map(cell => cell.replace(/^"|"$/g, "").trim())
+    );
 }
+
 
 // === EVENT KLIK TOMBOL ===
 document.addEventListener("DOMContentLoaded", () => {
