@@ -29,15 +29,31 @@
   </section>
 
   <!-- CARD 2: RINGKASAN AKADEMIK -->
-  <section class="card">
-    <h2>Ringkasan Akademik</h2>
-    <div class="grid-2">
-      <div class="stat">
-        <span class="stat-label">IPK Terakhir</span>
-        <span class="stat-value" id="ipk"></span>
-      </div>
+ <section class="card">
+  <h2>Ringkasan Akademik</h2>
+
+  <div class="grid-2">
+    <div class="stat">
+      <span class="stat-label">IPK Terakhir</span>
+      <span class="stat-value" id="ipk"></span>
     </div>
-  </section>
+
+    <div class="stat">
+      <span class="stat-label">IPS Terakhir</span>
+      <span class="stat-value" id="ips"></span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-label">Total SKS Ditempuh</span>
+      <span class="stat-value" id="sks-total"></span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-label">Total SKS Lulus</span>
+      <span class="stat-value" id="sks-lulus"></span>
+    </div>
+  </div>
+</section>
 
   <!-- CARD 3: KONDISI SAAT INI -->
   <section class="card">
@@ -59,6 +75,10 @@
 </footer>
 
 <script>
+  document.getElementById("ips").textContent = m.ips;
+document.getElementById("sks-total").textContent = m.sksTotal;
+document.getElementById("sks-lulus").textContent = m.sksLulus;
+
   const data = sessionStorage.getItem("pokjarMahasiswa");
 
   if (!data) {
