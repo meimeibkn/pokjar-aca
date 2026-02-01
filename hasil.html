@@ -197,6 +197,33 @@ document.getElementById("sim-sks-lulus").textContent = m.sksLulus;
 document.getElementById("sim-sks-sisa").textContent = 145 - m.sksLulus;
 </script>
 
+  <script>
+// ===== SIMULASI TARGET IPS =====
+var TARGET_IPK = 3.5;
+var TOTAL_SKS = 145;
+
+var ipkSaatIni = parseFloat(m.ipk);
+var sksLulus = parseInt(m.sksLulus);
+
+var nilaiMutuSaatIni = ipkSaatIni * sksLulus;
+var nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
+var nilaiMutuSisa = nilaiMutuTarget - nilaiMutuSaatIni;
+var sksSisa = TOTAL_SKS - sksLulus;
+
+// IPS rata-rata yang dibutuhkan
+var ipsTarget = nilaiMutuSisa / sksSisa;
+
+// Pembulatan 2 angka desimal
+function round2(x) {
+  return Math.round(x * 100) / 100;
+}
+
+// Isi ke tabel simulasi
+document.getElementById("ips-8").textContent = round2(ipsTarget);
+document.getElementById("ips-9").textContent = round2(ipsTarget);
+document.getElementById("ips-10").textContent = round2(ipsTarget);
+</script>
+
 <!-- SCRIPT 2: FETCH NILAI + ANALISIS -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
