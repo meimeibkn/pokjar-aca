@@ -39,9 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const header = data[0];
     const rows = data.slice(1);
 
-    const nimIndex = header.indexOf("NIM");
+   const nimIndex = header.findIndex(
+  h => h.toLowerCase().trim() === "nim"
+);
 
-    const mahasiswa = rows.find(row => row[nimIndex] === nimInput);
+
+ const mahasiswa = rows.find(
+  row => row[nimIndex] && row[nimIndex].trim() === nimInput
+);
+
 
     if (!mahasiswa) {
       alert("NIM tidak ditemukan di database");
