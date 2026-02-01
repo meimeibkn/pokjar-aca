@@ -41,7 +41,7 @@
     </div>
   </section>
 
-  <!-- NILAI SEMESTER TERAKHIR -->
+  <!-- NILAI SEMESTER -->
   <section class="card">
     <h2>Nilai Semester Terakhir</h2>
     <div class="table-wrapper">
@@ -133,147 +133,49 @@
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <footer class="footer">
   * Hasil simulasi bersifat pendampingan akademik dan bukan keputusan resmi Universitas Terbuka.
 </footer>
 
-<!-- ================= SCRIPT ================= -->
-<script>
-/* ===== AMBIL DATA SESSION ===== */
-var raw = sessionStorage.getItem("pokjarMahasiswa");
-if (!raw) {
-  alert("Data tidak ditemukan");
-  window.location.href = "index.html";
-}
-var m = JSON.parse(raw);
-
-/* ===== ISI DATA MAHASISWA ===== */
-document.getElementById("nama").textContent = m.nama;
-document.getElementById("nim").textContent = m.nim;
-document.getElementById("jurusan").textContent = m.jurusan;
-document.getElementById("ipk").textContent = m.ipk;
-document.getElementById("ips").textContent = m.ips;
-document.getElementById("sks-total").textContent = m.sksTotal;
-document.getElementById("sks-lulus").textContent = m.sksLulus;
-
-/* ===== SIMULASI RINGKAS ===== */
-document.getElementById("sim-ipk").textContent = m.ipk;
-document.getElementById("sim-sks-lulus").textContent = m.sksLulus;
-document.getElementById("sim-sks-sisa").textContent = 145 - parseInt(m.sksLulus);
-
-/* ===== FETCH NILAI & ANALISIS ===== */
+<!-- ================= SCRIPT (SATU BLOK SAJA) ================= -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  var data = sessionStorage.getItem("pokjarMahasiswa");
-  if (!data) return;
+  /* ===== SESSION ===== */
+  var raw = sessionStorage.getItem("pokjarMahasiswa");
+  if (!raw) {
+    alert("Data tidak ditemukan");
+    location.href = "index.html";
+    return;
+  }
+  var m = JSON.parse(raw);
 
-  var m = JSON.parse(data);
-  var nim = m.nim;
+  document.getElementById("nama").textContent = m.nama;
+  document.getElementById("nim").textContent = m.nim;
+  document.getElementById("jurusan").textContent = m.jurusan;
+  document.getElementById("ipk").textContent = m.ipk;
+  document.getElementById("ips").textContent = m.ips;
+  document.getElementById("sks-total").textContent = m.sksTotal;
+  document.getElementById("sks-lulus").textContent = m.sksLulus;
 
-  var SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
-  var SHEET = "Nilai Mahasiswa";
+  document.getElementById("sim-ipk").textContent = m.ipk;
+  document.getElementById("sim-sks-lulus").textContent = m.sksLulus;
+  document.getElementById("sim-sks-sisa").textContent = 145 - m.sksLulus;
 
-  var query = "select E, F, G, H where A = '" + nim + "'";
+  /* ===== SIMULASI IPS ===== */
+  var targetIPK = 3.5;
+  var totalSKS = 145;
+  var nilaiMutuSekarang = m.ipk * m.sksLulus;
+  var sisaNilaiMutu = targetIPK * totalSKS - nilaiMutuSekarang;
+  var rataSKS = 22;
 
-  var url =
-    "https://docs.google.com/spreadsheets/d/" +
-    SPREADSHEET_ID +
-    "/gviz/tq?sheet=" +
-    encodeURIComponent(SHEET) +
-    "&tq=" +
-    encodeURIComponent(query);
+  function hitungIPS(semester) {
+    return (sisaNilaiMutu / (semester * rataSKS)).toFixed(2);
+  }
 
-  fetch(url)
-    .then(function (res) {
-      return res.text();
-    })
-    .then(function (text) {
-
-      var json = JSON.parse(
-        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
-      );
-
-      var rows = json.table.rows;
-
-      var tbodyNilai = document.querySelector("#tabel-nilai tbody");
-      var tbodyWajib = document.getElementById("tabel-wajib-ulang");
-      var tbodySaran = document.getElementById("tabel-disarankan");
-      var ket = document.getElementById("keterangan-analisis");
-
-      tbodyNilai.innerHTML = "";
-      tbodyWajib.innerHTML = "";
-      tbodySaran.innerHTML = "";
-      ket.innerHTML = "";
-
-      if (!rows || rows.length === 0) {
-        tbodyNilai.innerHTML =
-          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
-        return;
-      }
-
-      var jumlahC = 0;
-      var adaE = false;
-
-      for (var i = 0; i < rows.length; i++) {
-        var c = rows[i].c;
-
-        var kode  = c[0] && c[0].v ? c[0].v : "-";
-        var nama  = c[1] && c[1].v ? c[1].v : "-";
-        var sks   = c[2] && c[2].v ? c[2].v : "-";
-        var nilai = c[3] && c[3].v ? c[3].v : "-";
-
-        // ===== TABEL NILAI =====
-        tbodyNilai.innerHTML +=
-          "<tr>" +
-            "<td data-label='Kode MK'>" + kode + "</td>" +
-            "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-            "<td data-label='SKS'>" + sks + "</td>" +
-            "<td data-label='Nilai'>" + nilai + "</td>" +
-          "</tr>";
-
-        // ===== WAJIB DIULANG =====
-        if (nilai === "E") {
-          adaE = true;
-          tbodyWajib.innerHTML +=
-            "<tr>" +
-              "<td data-label='Kode MK'>" + kode + "</td>" +
-              "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-              "<td data-label='SKS'>" + sks + "</td>" +
-              "<td data-label='Nilai'>" + nilai + "</td>" +
-              "<td data-label='Status'><span class='status-ulang'>Ulang</span></td>" +
-            "</tr>";
-        }
-
-        // ===== DISARANKAN =====
-        if (nilai === "C") {
-          jumlahC++;
-          tbodySaran.innerHTML +=
-            "<tr>" +
-              "<td data-label='Kode MK'>" + kode + "</td>" +
-              "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-              "<td data-label='SKS'>" + sks + "</td>" +
-              "<td data-label='Nilai'>" + nilai + "</td>" +
-            "</tr>";
-        }
-      }
-
-      if (adaE) {
-        ket.innerHTML +=
-          "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
-      }
-
-      if (jumlahC > 2) {
-        ket.innerHTML +=
-          "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
-      }
-    })
-    .catch(function (err) {
-      console.error(err);
-      document.querySelector("#tabel-nilai tbody").innerHTML =
-        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
-    });
+  document.getElementById("ips-8").textContent  = hitungIPS(7);
+  document.getElementById("ips-9").textContent  = hitungIPS(8);
+  document.getElementById("ips-10").textContent = hitungIPS(9);
 
 });
 </script>
