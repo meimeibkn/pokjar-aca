@@ -93,6 +93,13 @@
     </table>
   </div>
 </section>
+<!-- CARD 5: ANALISIS MATA KULIAH -->
+<section class="card" id="analisis-mk">
+  <h2>Analisis Mata Kuliah</h2>
+  <ul id="hasil-analisis">
+    <li>Memproses data nilai...</li>
+  </ul>
+</section>
 
 </main>
 
@@ -196,6 +203,41 @@ document.addEventListener("DOMContentLoaded", () => {
         "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
     });
 });
+  // ===== ANALISIS NILAI =====
+let jumlahC = 0;
+const analisis = [];
+
+rows.forEach(r => {
+  const nilai = r.c[3] ? r.c[3].v : "";
+
+  if (nilai === "E") {
+    analisis.push("Mata kuliah dengan nilai E wajib diulang.");
+  } 
+  else if (nilai === "D") {
+    analisis.push("Mata kuliah dengan nilai D disarankan untuk diulang.");
+  } 
+  else if (nilai === "C") {
+    jumlahC++;
+  }
+});
+
+if (jumlahC > 2) {
+  analisis.push("Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.");
+}
+
+const ul = document.getElementById("hasil-analisis");
+ul.innerHTML = "";
+
+if (analisis.length === 0) {
+  ul.innerHTML = "<li>Tidak ada mata kuliah bermasalah.</li>";
+} else {
+  analisis.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+}
+
 </script>
 
 </body>
