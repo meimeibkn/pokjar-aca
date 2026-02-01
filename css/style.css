@@ -102,57 +102,6 @@ body {
   color: #192f52;
 }
 
-/* ================= TABLE ================= */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  width: 100%;
-  min-width: 600px; /* ⬅️ INI KUNCI MOBILE */
-  border-collapse: collapse;
-  font-size: 14px;
-  background: #ffffff;
-}
-
-thead {
-  background: #f0f4ff;
-  display: table-header-group;
-}
-
-th, td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e6e6e6;
-  text-align: left;
-  white-space: nowrap;
-}
-
-th {
-  color: #192f52;
-  font-weight: 600;
-}
-
-/* ================= STATUS BADGE ================= */
-.status-ulang {
-  display: inline-block;
-  background: #e35d5d;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-/* ================= FOOTER ================= */
-.footer {
-  text-align: center;
-  font-size: 13px;
-  color: #555;
-  padding: 24px 16px 40px;
-}
-
 /* ===== TABLE (DESKTOP & MOBILE SAMA) ===== */
 .table-wrapper {
   width: 100%;
