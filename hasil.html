@@ -9,6 +9,7 @@
 
 <body>
 
+<!-- HEADER -->
 <header class="hero hero-hasil">
   <div class="hero-content">
     <h1>Strategi Kuliah Personal</h1>
@@ -16,46 +17,52 @@
   </div>
 </header>
 
+<!-- KONTEN -->
 <main class="hasil-container">
 
   <!-- CARD 1: DATA MAHASISWA -->
   <section class="card">
     <h2>Data Mahasiswa</h2>
     <div class="grid-2">
-      <div><strong>Nama</strong><br><span id="nama"></span></div>
-      <div><strong>NIM</strong><br><span id="nim"></span></div>
-      <div><strong>Jurusan</strong><br><span id="jurusan"></span></div>
+      <div>
+        <strong>Nama</strong><br>
+        <span id="nama">-</span>
+      </div>
+      <div>
+        <strong>NIM</strong><br>
+        <span id="nim">-</span>
+      </div>
+      <div>
+        <strong>Jurusan</strong><br>
+        <span id="jurusan">-</span>
+      </div>
     </div>
   </section>
 
   <!-- CARD 2: RINGKASAN AKADEMIK -->
- <section class="card">
-  <h2>Ringkasan Akademik</h2>
-
-  <div class="grid-2">
-    <div class="stat">
-      <span class="stat-label">IPK Terakhir</span>
-      <span class="stat-value" id="ipk"></span>
+  <section class="card">
+    <h2>Ringkasan Akademik</h2>
+    <div class="grid-2">
+      <div class="stat">
+        <span class="stat-label">IPK Terakhir</span>
+        <span class="stat-value" id="ipk">-</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">IPS Terakhir</span>
+        <span class="stat-value" id="ips">-</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Total SKS Ditempuh</span>
+        <span class="stat-value" id="sks-total">-</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Total SKS Lulus</span>
+        <span class="stat-value" id="sks-lulus">-</span>
+      </div>
     </div>
+  </section>
 
-    <div class="stat">
-      <span class="stat-label">IPS Terakhir</span>
-      <span class="stat-value" id="ips"></span>
-    </div>
-
-    <div class="stat">
-      <span class="stat-label">Total SKS Ditempuh</span>
-      <span class="stat-value" id="sks-total"></span>
-    </div>
-
-    <div class="stat">
-      <span class="stat-label">Total SKS Lulus</span>
-      <span class="stat-value" id="sks-lulus"></span>
-    </div>
-  </div>
-</section>
-
-  <!-- CARD 3: KONDISI SAAT INI -->
+  <!-- CARD 3: KETERANGAN -->
   <section class="card">
     <h2>Kondisi Akademik Saat Ini</h2>
     <p>
@@ -64,95 +71,38 @@
       agar IPK akhir dapat mencapai <strong>3,5</strong>.
     </p>
   </section>
-<section class="card">
-  <h2>Nilai Semester Terakhir</h2>
-
-  <div class="table-wrapper">
-    <table id="tabel-nilai">
-      <thead>
-        <tr>
-          <th>Kode MK</th>
-          <th>Nama Mata Kuliah</th>
-          <th>SKS</th>
-          <th>Nilai</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- diisi lewat JS -->
-      </tbody>
-    </table>
-  </div>
-</section>
 
 </main>
 
+<!-- FOOTER -->
 <footer class="footer">
   <p>
     * Hasil simulasi ini bersifat pendampingan akademik dan
     <strong>bukan merupakan keputusan resmi Universitas Terbuka</strong>.
   </p>
 </footer>
+
+<!-- SCRIPT: BACA SESSION STORAGE -->
 <script>
-  // ===== AMBIL DATA MAHASISWA DARI SESSION =====
-  const data = sessionStorage.getItem("pokjarMahasiswa");
+const data = sessionStorage.getItem("pokjarMahasiswa");
 
-  if (!data) {
-    alert("Data tidak ditemukan. Silakan kembali ke halaman awal.");
-    window.location.href = "index.html";
-  }
+if (!data) {
+  alert("Data tidak ditemukan. Silakan ulangi dari halaman awal.");
+  window.location.href = "index.html";
+}
 
-  const m = JSON.parse(data);
+const m = JSON.parse(data);
 
-  // ===== ISI DATA MAHASISWA =====
-  document.getElementById("nama").textContent = m.nama;
-  document.getElementById("nim").textContent = m.nim;
-  document.getElementById("jurusan").textContent = m.jurusan;
+// Isi data mahasiswa
+document.getElementById("nama").textContent = m.nama;
+document.getElementById("nim").textContent = m.nim;
+document.getElementById("jurusan").textContent = m.jurusan;
 
-  // ===== ISI RINGKASAN AKADEMIK =====
-  document.getElementById("ipk").textContent = m.ipk;
-  document.getElementById("ips").textContent = m.ips;
-  document.getElementById("sks-total").textContent = m.sksTotal;
-  document.getElementById("sks-lulus").textContent = m.sksLulus;
-
-  // ===== AMBIL NILAI SEMESTER TERAKHIR =====
-  const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
-  const SHEET_NILAI = "Nilai Mahasiswa";
-
-const query = `
-  select D, E, C, F
-  where G contains '${m.nim}'
-`;
-
-  const url =
-    "https://docs.google.com/spreadsheets/d/" +
-    SPREADSHEET_ID +
-    "/gviz/tq?sheet=" +
-    encodeURIComponent(SHEET_NILAI) +
-    "&tq=" +
-    encodeURIComponent(query);
-
-  fetch(url)
-    .then(res => res.text())
-    .then(text => {
-      const json = JSON.parse(
-        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
-      );
-
-      const rows = json.table.rows;
-      const tbody = document.querySelector("#tabel-nilai tbody");
-
-      rows.forEach(row => {
-        const tr = document.createElement("tr");
-
-        row.c.forEach(cell => {
-          const td = document.createElement("td");
-          td.textContent = cell ? cell.v : "-";
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      });
-    });
+// Isi ringkasan akademik
+document.getElementById("ipk").textContent = m.ipk;
+document.getElementById("ips").textContent = m.ips;
+document.getElementById("sks-total").textContent = m.sksTotal;
+document.getElementById("sks-lulus").textContent = m.sksLulus;
 </script>
 
 </body>
