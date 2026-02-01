@@ -318,6 +318,43 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+<script>
+/* ===============================
+   SIMULASI TARGET IPS
+   =============================== */
+
+// DATA DASAR
+var ipkSaatIni = parseFloat(m.ipk);        // contoh: 2.14
+var sksLulus = parseInt(m.sksLulus);       // contoh: 11
+var totalSKS = 145;                        // SYARAT LULUS UT
+var targetIPK = 3.5;
+var sisaSKS = totalSKS - sksLulus;
+
+// RATA-RATA SKS AMAN PER SEMESTER
+var rataSKS = 22;
+
+// HITUNG NILAI MUTU
+var nilaiMutuSekarang = ipkSaatIni * sksLulus;
+var nilaiMutuTarget = targetIPK * totalSKS;
+var sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSekarang;
+
+// FUNGSI HITUNG TARGET IPS
+function hitungTargetIPS(semesterTersisa) {
+  var totalSKSDitempuh = semesterTersisa * rataSKS;
+  var ips = sisaNilaiMutu / totalSKSDitempuh;
+  return ips.toFixed(2);
+}
+
+// ISI KE HTML
+document.getElementById("sim-ipk").textContent = ipkSaatIni.toFixed(2);
+document.getElementById("sim-sks-lulus").textContent = sksLulus;
+document.getElementById("sim-sks-sisa").textContent = sisaSKS;
+
+// SKENARIO
+document.getElementById("ips-8").textContent  = hitungTargetIPS(7);
+document.getElementById("ips-9").textContent  = hitungTargetIPS(8);
+document.getElementById("ips-10").textContent = hitungTargetIPS(9);
+</script>
 
 </body>
 </html>
