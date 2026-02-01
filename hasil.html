@@ -229,10 +229,10 @@ let jumlahC = 0;
 let adaE = false;
 
 rows.forEach(r => {
-  const kode = r.c[0]?.v || "";
-  const nama = r.c[1]?.v || "";
-  const sks  = r.c[2]?.v || "";
-  const nilai = r.c[3]?.v || "";
+const kode  = r.c[0] && r.c[0].v ? r.c[0].v : "";
+const nama  = r.c[1] && r.c[1].v ? r.c[1].v : "";
+const sks   = r.c[2] && r.c[2].v ? r.c[2].v : "";
+const nilai = r.c[3] && r.c[3].v ? r.c[3].v : "";
 
   // Nilai E → wajib diulang
   if (nilai === "E") {
