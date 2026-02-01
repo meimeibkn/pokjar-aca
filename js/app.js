@@ -9,15 +9,33 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Spreadsheet ID (BUKAN yang 2PACX, tapi ID asli)
-    const SPREADSHEET_ID = "PASTE_ID_DI_SINI";
+    // === KONFIGURASI FINAL ===
+    const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
+    const SHEET_NAME = "Database Mahasiswa";
 
-    // Nama sheet HARUS PERSIS
-    const SHEET_NAME = "PASTE_NAMA_SHEET_DI_SINI";
+    // Asumsi urutan kolom di 'Database Mahasiswa':
+    // A = NIM
+    // B = Nama
+    // C = Jurusan
+    // D = Fakultas
+    // E = Status RPL
+    // F = Status SIPAS
+    // G = Semester Berjalan
+    // H = Semester Mendatang
+    // I = IPK Terakhir
+    // J = IPS Terakhir
+    // K = Total SKS Ditempuh
+    // L = Total SKS Lulus
 
     const query = `
-      select A, B, C, D, E
+      select A, B, C, D, I
       where A = '${nimInput}'
+      label
+        A 'NIM',
+        B 'Nama',
+        C 'Jurusan',
+        D 'Fakultas',
+        I 'IPK Terakhir'
     `;
 
     const url =
@@ -48,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "NIM ditemukan!\n\n" +
           "Nama: " + data[1].v + "\n" +
           "Jurusan: " + data[2].v + "\n" +
+          "Fakultas: " + data[3].v + "\n" +
           "IPK Terakhir: " + data[4].v
         );
       })
