@@ -1,3 +1,4 @@
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -95,18 +96,113 @@ button:hover {
   color: #e35d5d;
   font-size: 13px;
 }
-/* ===== MOBILE RESPONSIVE ===== */
+
+/* ===== HASIL PAGE ===== */
+.hero-hasil {
+  min-height: auto;
+  padding: 48px 20px;
+  background: linear-gradient(180deg, #a1c2fd 0%, #ffffff 100%);
+}
+
+.hasil-container {
+  max-width: 900px;
+  margin: -40px auto 40px;
+  padding: 0 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  color: #192f52;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+/* ===== GRID & STAT ===== */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.stat {
+  background: #f4f7ff;
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #2c6ba0;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #192f52;
+}
+
+/* ===== TABLE ===== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: #f0f4ff;
+}
+
+th, td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+}
+
+th {
+  color: #192f52;
+  font-weight: 600;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  padding: 24px 16px 40px;
+}
+
+/* =====================================================
+   MOBILE FIX — HILANGKAN GARIS ANEH KOLOM STATUS
+   ===================================================== */
 @media (max-width: 600px) {
 
   .hero {
     padding: 24px 16px;
   }
 
-.hero-logo {
-  width: 88px;
-  margin-bottom: 14px;
-}
-
+  .hero-logo {
+    width: 88px;
+    margin-bottom: 14px;
+  }
 
   .hero h1 {
     font-size: 26px;
@@ -138,87 +234,16 @@ button:hover {
     font-size: 15px;
   }
 
-}
-/* ===== HASIL PAGE ===== */
+  /* ===== TABLE MOBILE FIX ===== */
+  .table-wrapper {
+    overflow-x: hidden;
+  }
 
-.hero-hasil {
-  min-height: auto;
-  padding: 48px 20px;
-  background: linear-gradient(180deg, #a1c2fd 0%, #ffffff 100%);
-}
+  .col-status {
+    display: none;
+  }
 
-.hasil-container {
-  max-width: 900px;
-  margin: -40px auto 40px;
-  padding: 0 20px;
+  table {
+    width: 100%;
+  }
 }
-
-.card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 28px;
-  margin-bottom: 24px;
-  box-shadow: 0 16px 32px rgba(0,0,0,0.08);
-}
-
-.card h2 {
-  color: #192f52;
-  margin-bottom: 16px;
-  font-size: 20px;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.stat {
-  background: #f4f7ff;
-  padding: 20px;
-  border-radius: 14px;
-  text-align: center;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #2c6ba0;
-}
-
-.stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: #192f52;
-}
-
-.footer {
-  text-align: center;
-  font-size: 13px;
-  color: #555;
-  padding: 24px 16px 40px;
-}
-.table-wrapper {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-thead {
-  background: #f0f4ff;
-}
-
-th, td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e6e6e6;
-  text-align: left;
-}
-
-th {
-  color: #192f52;
-  font-weight: 600;
-}
-
