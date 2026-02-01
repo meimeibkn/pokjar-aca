@@ -71,6 +71,28 @@
       agar IPK akhir dapat mencapai <strong>3,5</strong>.
     </p>
   </section>
+<!-- CARD 4: NILAI SEMESTER TERAKHIR -->
+<section class="card">
+  <h2>Nilai Semester Terakhir</h2>
+
+  <div class="table-wrapper">
+    <table id="tabel-nilai">
+      <thead>
+        <tr>
+          <th>Kode MK</th>
+          <th>Nama Mata Kuliah</th>
+          <th>SKS</th>
+          <th>Nilai</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4">Memuat data nilai...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
 </main>
 
@@ -103,6 +125,77 @@ document.getElementById("ipk").textContent = m.ipk;
 document.getElementById("ips").textContent = m.ips;
 document.getElementById("sks-total").textContent = m.sksTotal;
 document.getElementById("sks-lulus").textContent = m.sksLulus;
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const data = sessionStorage.getItem("pokjarMahasiswa");
+  if (!data) return;
+
+  const mahasiswa = JSON.parse(data);
+  const nim = mahasiswa.nim;
+
+  const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
+  const SHEET = "Nilai Mahasiswa";
+
+  // Struktur sheet:
+  // A = NIM
+  // B = Nama
+  // C = Jurusan
+  // D = Semester
+  // E = Kode MK
+  // F = Mata Kuliah
+  // G = SKS
+  // H = Nilai
+
+  const query = `
+    select E, F, G, H
+    where A = '${nim}'
+  `;
+
+  const url =
+    "https://docs.google.com/spreadsheets/d/" +
+    SPREADSHEET_ID +
+    "/gviz/tq?sheet=" +
+    encodeURIComponent(SHEET) +
+    "&tq=" +
+    encodeURIComponent(query);
+
+  fetch(url)
+    .then(res => res.text())
+    .then(text => {
+      const json = JSON.parse(
+        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+      );
+
+      const rows = json.table.rows;
+      const tbody = document.querySelector("#tabel-nilai tbody");
+      tbody.innerHTML = "";
+
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML =
+          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
+        return;
+      }
+
+      rows.forEach(r => {
+        const tr = document.createElement("tr");
+
+        r.c.forEach(cell => {
+          const td = document.createElement("td");
+          td.textContent = cell ? cell.v : "-";
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      const tbody = document.querySelector("#tabel-nilai tbody");
+      tbody.innerHTML =
+        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
+    });
+});
 </script>
 
 </body>
