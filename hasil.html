@@ -260,7 +260,14 @@ document.addEventListener("DOMContentLoaded", () => {
     ketList.innerHTML +=
       "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian untuk menaikkan IPK.</li>";
   }
-  <!-- CARD: SIMULASI STRATEGI IPK -->
+})
+.catch(err => {
+  console.error(err);
+  const tbody = document.querySelector("#tabel-nilai tbody");
+  tbody.innerHTML =
+    "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
+});
+    <!-- CARD: SIMULASI STRATEGI IPK -->
 <section class="card">
   <h2>Simulasi Strategi Lulus Dengan IPK 3,5</h2>
 
@@ -339,13 +346,6 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 </section>
 
-})
-.catch(err => {
-  console.error(err);
-  const tbody = document.querySelector("#tabel-nilai tbody");
-  tbody.innerHTML =
-    "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
-});
 });
 </script>
 </body>
