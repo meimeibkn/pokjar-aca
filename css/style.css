@@ -28,8 +28,8 @@ body {
 
 /* ===== LOGO ===== */
 .hero-logo {
-  width: 90px;
-  margin-bottom: 16px;
+  width: 120px;
+  margin-bottom: 18px;
 }
 
 /* ===== TITLE ===== */
@@ -102,10 +102,11 @@ button:hover {
     padding: 24px 16px;
   }
 
-  .hero-logo {
-    width: 64px;
-    margin-bottom: 12px;
-  }
+.hero-logo {
+  width: 88px;
+  margin-bottom: 14px;
+}
+
 
   .hero h1 {
     font-size: 26px;
