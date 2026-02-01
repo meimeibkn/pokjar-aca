@@ -65,8 +65,10 @@ const mahasiswaData = {
   nim: data[0].v,
   nama: data[1].v,
   jurusan: data[2].v,
-  fakultas: data[3].v,
-  ipk: data[4].v
+  ipk: data[4].v,
+  ips: data[5].v,
+  sksTotal: data[6].v,
+  sksLulus: data[7].v
 };
 
 // Simpan ke sessionStorage
