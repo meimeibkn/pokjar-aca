@@ -60,16 +60,16 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const data = rows[0].c;
 const mahasiswaData = {
   nim: data[0].v,
   nama: data[1].v,
   jurusan: data[2].v,
-  ipk: data[4].v,
-  ips: data[5].v,
-  sksTotal: data[6].v,
-  sksLulus: data[7].v
+  ipk: data[3].v,
+  ips: data[4].v,
+  sksTotal: data[5].v,
+  sksLulus: data[6].v
 };
+
 
 // Simpan ke sessionStorage
 sessionStorage.setItem(
