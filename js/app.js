@@ -61,14 +61,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const data = rows[0].c;
+const mahasiswaData = {
+  nim: data[0].v,
+  nama: data[1].v,
+  jurusan: data[2].v,
+  fakultas: data[3].v,
+  ipk: data[4].v
+};
 
-        alert(
-          "NIM ditemukan!\n\n" +
-          "Nama: " + data[1].v + "\n" +
-          "Jurusan: " + data[2].v + "\n" +
-          "Fakultas: " + data[3].v + "\n" +
-          "IPK Terakhir: " + data[4].v
-        );
+// Simpan ke sessionStorage
+sessionStorage.setItem(
+  "pokjarMahasiswa",
+  JSON.stringify(mahasiswaData)
+);
+
+// Pindah ke halaman hasil
+window.location.href = "hasil.html";
       })
       .catch(err => {
         console.error(err);
