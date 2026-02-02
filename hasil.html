@@ -103,14 +103,15 @@
     <ul id="keterangan"></ul>
   </section>
 
-  <!-- ================= CARD: TARGET NILAI MINIMAL ================= -->
+<!-- ================= CARD: TARGET NILAI MINIMAL ================= -->
 <section class="card">
   <h2>Target Nilai Minimal Untuk Mencapai IPK 3,5</h2>
 
   <p class="card-desc">
     Target berikut merupakan <strong>nilai rata-rata minimum</strong> yang perlu
-    dijaga hingga akhir masa studi agar IPK kelulusan mencapai <strong>3,5</strong>,
-    dengan asumsi seluruh mata kuliah berbobot <strong>3 SKS</strong>.
+    dijaga mahasiswa hingga akhir masa studi agar IPK kelulusan dapat mencapai
+    <strong>3,5</strong>. Perhitungan disesuaikan dengan kondisi akademik
+    mahasiswa saat ini.
   </p>
 
   <div class="table-wrapper">
@@ -122,27 +123,28 @@
         </tr>
       </thead>
       <tbody>
+        <!-- FIX -->
         <tr>
           <td>Target IPK Kelulusan</td>
           <td><strong>3,5</strong></td>
         </tr>
         <tr>
-          <td>Target IPS Rata-rata Sisa Studi</td>
-          <td><strong>3,61</strong></td>
-        </tr>
-        <tr>
           <td>Target TUTON Rata-rata</td>
           <td><strong>80</strong></td>
         </tr>
+
+        <!-- DINAMIS -->
+        <tr>
+          <td>Target IPS Rata-rata Sisa Studi</td>
+          <td><strong id="target-ips">-</strong></td>
+        </tr>
         <tr>
           <td>Target UAS Rata-rata</td>
-          <td><strong>74</strong></td>
+          <td><strong id="target-uas">-</strong></td>
         </tr>
         <tr>
           <td>Nilai Huruf Minimal</td>
-          <td>
-            <span class="badge-nilai">B</span>
-          </td>
+          <td><span class="badge-nilai" id="target-huruf">-</span></td>
         </tr>
       </tbody>
     </table>
@@ -150,7 +152,7 @@
 
   <p class="card-note">
     Perhitungan menggunakan bobot penilaian Universitas Terbuka
-    (<strong>TUTON 30%</strong> dan <strong>UAS 70%</strong>).  
+    (<strong>TUTON 30%</strong> dan <strong>UAS 70%</strong>).
     Nilai dibulatkan <strong>ke atas</strong> untuk menjaga keamanan pencapaian IPK.
     Simulasi ini bersifat pendampingan akademik dan bukan keputusan resmi UT.
   </p>
@@ -327,6 +329,68 @@ const targetIPS = hitungTargetIPS();
   document.getElementById(`uas${s.id}`).textContent = "± " + uas;
   document.getElementById(`huruf${s.id}`).textContent = konversiNilai(uas);
 });
+</script>
+<script>
+/* ===============================
+   KONSTANTA (FIX)
+   =============================== */
+const TARGET_IPK = 3.5;
+const TOTAL_SKS = 145;
+
+const TUTON = 80;
+const BOBOT_TUTON = 0.3;
+const BOBOT_UAS = 0.7;
+
+/* ===============================
+   DATA MAHASISWA (DINAMIS)
+   =============================== */
+const ipkSekarang = parseFloat(m.ipk);
+const sksLulus = parseInt(m.sksLulus);
+
+const sisaSKS = TOTAL_SKS - sksLulus;
+
+/* ===============================
+   HITUNG TARGET IPS SISA STUDI
+   =============================== */
+const mutuSekarang = ipkSekarang * sksLulus;
+const mutuTarget = TARGET_IPK * TOTAL_SKS;
+const sisaMutu = mutuTarget - mutuSekarang;
+
+let targetIPS = sisaMutu / sisaSKS;
+
+/* Pembulatan ke atas (aman) */
+targetIPS = Math.ceil(targetIPS * 100) / 100;
+
+/* ===============================
+   HITUNG TARGET UAS
+   =============================== */
+let nilaiAkhir = targetIPS * 25;
+
+let targetUAS =
+  (nilaiAkhir - (TUTON * BOBOT_TUTON)) / BOBOT_UAS;
+
+targetUAS = Math.ceil(targetUAS);
+
+/* ===============================
+   KONVERSI NILAI
+   =============================== */
+function konversiNilai(uas) {
+  if (uas >= 80) return "A";
+  if (uas >= 75) return "B";
+  if (uas >= 70) return "B-";
+  if (uas >= 65) return "C";
+  if (uas >= 60) return "C-";
+  if (uas >= 55) return "D";
+  if (uas >= 50) return "D-";
+  return "E";
+}
+
+/* ===============================
+   ISI KE TABEL
+   =============================== */
+document.getElementById("target-ips").textContent = targetIPS.toFixed(2);
+document.getElementById("target-uas").textContent = targetUAS;
+document.getElementById("target-huruf").textContent = konversiNilai(targetUAS);
 </script>
 
 </body>
