@@ -344,6 +344,76 @@ tbodyNilai.innerHTML +=
 
 });
 </script>
+<script>
+/* ===============================
+   SIMULASI TARGET NILAI SEMESTER
+   =============================== */
+
+(function () {
+
+  // ===== DATA DASAR =====
+  var TARGET_IPK = 3.5;
+  var TOTAL_SKS = 145;
+  var NILAI_TUTON = 80;
+  var BOBOT_TUTON = 0.3;
+  var BOBOT_UAS = 0.7;
+
+  var data = sessionStorage.getItem("pokjarMahasiswa");
+  if (!data) return;
+
+  var m = JSON.parse(data);
+
+  // ===== TARGET IPS (SUDAH KAMU HITUNG SEBELUMNYA) =====
+  var targetIPS = {
+    8: parseFloat(document.getElementById("ips-8").textContent),
+    9: parseFloat(document.getElementById("ips-9").textContent),
+    10: parseFloat(document.getElementById("ips-10").textContent)
+  };
+
+  // ===== HITUNG TARGET UAS =====
+  function hitungTargetUAS(ips) {
+    // Nilai Akhir = IPS × 25
+    var nilaiAkhir = ips * 25;
+
+    // Nilai Akhir = 24 + 0.7 × UAS
+    var uas = (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
+    return Math.round(uas);
+  }
+
+  // ===== KONVERSI KE HURUF MUTU =====
+  function konversiHuruf(nilaiAkhir) {
+    if (nilaiAkhir > 80) return "A";
+    if (nilaiAkhir >= 75) return "B";
+    if (nilaiAkhir >= 70) return "B-";
+    if (nilaiAkhir >= 65) return "C";
+    if (nilaiAkhir >= 60) return "C-";
+    if (nilaiAkhir >= 55) return "D";
+    if (nilaiAkhir >= 50) return "D-";
+    return "E";
+  }
+
+  // ===== ISI TABEL =====
+  [8, 9, 10].forEach(function (semester) {
+
+    var ips = targetIPS[semester];
+    if (isNaN(ips)) return;
+
+    var uas = hitungTargetUAS(ips);
+    var nilaiAkhir = (BOBOT_TUTON * NILAI_TUTON) + (BOBOT_UAS * uas);
+    var huruf = konversiHuruf(nilaiAkhir);
+
+    document.getElementById("ips-target-" + semester).textContent =
+      ips.toFixed(2);
+
+    document.getElementById("uas-target-" + semester).textContent =
+      "± " + uas;
+
+    document.getElementById("nilai-target-" + semester).textContent =
+      huruf;
+  });
+
+})();
+</script>
 
 </body>
 </html>
