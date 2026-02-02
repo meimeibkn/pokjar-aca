@@ -155,129 +155,89 @@
 <!-- ================= SCRIPT (SATU BLOK, AMAN) ================= -->
 <script>
 /* ===============================
-   1. AMBIL DATA MAHASISWA
+   SIMULASI TARGET NILAI SEMESTER BERIKUTNYA (FINAL)
    =============================== */
-const raw = sessionStorage.getItem("pokjarMahasiswa");
-if (!raw) {
+
+/* ===== AMBIL DATA MAHASISWA ===== */
+const rawSim = sessionStorage.getItem("pokjarMahasiswa");
+if (!rawSim) {
   alert("Data mahasiswa tidak ditemukan");
-  window.location.href = "index.html";
 }
-const m = JSON.parse(raw);
+const mSim = JSON.parse(rawSim);
 
-// isi data utama
-document.getElementById("nama").textContent = m.nama;
-document.getElementById("nim").textContent = m.nim;
-document.getElementById("jurusan").textContent = m.jurusan;
-document.getElementById("ipk").textContent = m.ipk;
-document.getElementById("ips").textContent = m.ips;
-document.getElementById("sks-total").textContent = m.sksTotal;
-document.getElementById("sks-lulus").textContent = m.sksLulus;
-
-/* ===============================
-   2. FETCH NILAI SEMESTER
-   =============================== */
-const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
-const SHEET = "Nilai Mahasiswa";
-
-const query = `select E, F, G, H where A='${m.nim}'`;
-const url =
-  `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET)}&tq=${encodeURIComponent(query)}`;
-
-fetch(url)
-  .then(r => r.text())
-  .then(t => {
-    const json = JSON.parse(t.substring(t.indexOf("{"), t.lastIndexOf("}") + 1));
-    const rows = json.table.rows || [];
-
-    const tbNilai = document.getElementById("tabel-nilai");
-    const tbWajib = document.getElementById("tabel-wajib");
-    const tbSaran = document.getElementById("tabel-saran");
-    const ket = document.getElementById("keterangan");
-
-    tbNilai.innerHTML = "";
-    tbWajib.innerHTML = "";
-    tbSaran.innerHTML = "";
-    ket.innerHTML = "";
-
-    let jumlahC = 0;
-    let adaE = false;
-
-    rows.forEach(r => {
-      const c = r.c;
-      const kode = c[0]?.v || "-";
-      const nama = c[1]?.v || "-";
-      const sks = c[2]?.v || "-";
-      const nilai = c[3]?.v || "-";
-
-      tbNilai.innerHTML += `<tr><td>${kode}</td><td>${nama}</td><td>${sks}</td><td>${nilai}</td></tr>`;
-
-      if (nilai === "E") {
-        adaE = true;
-        tbWajib.innerHTML += `<tr><td>${kode}</td><td>${nama}</td><td>${sks}</td><td>E</td></tr>`;
-      }
-
-      if (nilai === "C") {
-        jumlahC++;
-        tbSaran.innerHTML += `<tr><td>${kode}</td><td>${nama}</td><td>${sks}</td><td>C</td></tr>`;
-      }
-    });
-
-    if (adaE) ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai E yang wajib diulang.</li>";
-    if (jumlahC > 2) ket.innerHTML += "<li>Jumlah nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
-  });
-
-/* ===============================
-   3. SIMULASI TARGET NILAI (FIX)
-   =============================== */
+/* ===== DATA DASAR ===== */
+const IPK_SEKARANG = parseFloat(mSim.ipk);
+const SKS_LULUS = parseInt(mSim.sksLulus);
 const TOTAL_SKS = 145;
 const TARGET_IPK = 3.5;
 
-const ipkNow = parseFloat(m.ipk);
-const sksLulus = parseInt(m.sksLulus);
+/* ===== PENILAIAN ===== */
+const NILAI_TUTON = 80;
+const BOBOT_TUTON = 0.30;
+const BOBOT_UAS = 0.70;
 
-const nilaiMutuNow = ipkNow * sksLulus;
+/* ===== HITUNG NILAI MUTU ===== */
+const nilaiMutuSekarang = IPK_SEKARANG * SKS_LULUS;
 const nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
-const sisaNilaiMutu = nilaiMutuTarget - nilaiMutuNow;
-const sisaSKS = TOTAL_SKS - sksLulus;
+const sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSekarang;
 
-const TUTON = 80;
-const BT = 0.3;
-const BU = 0.7;
+/* ===== ASUMSI BEBAN STUDI ===== */
+const SKS_RATA_SEMESTER = 22;
 
-function huruf(u) {
-  if (u >= 80) return "A";
-  if (u >= 75) return "B";
-  if (u >= 70) return "B-";
-  if (u >= 65) return "C";
-  if (u >= 60) return "C-";
-  if (u >= 55) return "D";
-  if (u >= 50) return "D-";
+/* ===== KONVERSI NILAI ===== */
+function konversiNilai(uas) {
+  if (uas >= 80) return "A";
+  if (uas >= 75) return "B";
+  if (uas >= 70) return "B-";
+  if (uas >= 65) return "C";
+  if (uas >= 60) return "C-";
+  if (uas >= 55) return "D";
+  if (uas >= 50) return "D-";
   return "E";
 }
 
-function simulasi(semester) {
-  const targetIPS = sisaNilaiMutu / sisaSKS;
+/* ===== FUNGSI SIMULASI ===== */
+function simulasiTarget(semesterTersisa) {
+
+  // Nilai mutu yang harus dicapai per semester
+  const mutuPerSemester = sisaNilaiMutu / semesterTersisa;
+
+  // Target IPS semester berikutnya
+  const targetIPS = mutuPerSemester / SKS_RATA_SEMESTER;
+
+  // Konversi ke nilai angka
   const nilaiAngka = targetIPS * 25;
-  const uas = (nilaiAngka - (BT * TUTON)) / BU;
-  return { ips: targetIPS.toFixed(2), uas: Math.round(uas), h: huruf(uas) };
+
+  // Hitung UAS
+  const targetUAS =
+    (nilaiAngka - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
+
+  return {
+    ips: targetIPS.toFixed(2),
+    uas: Math.round(targetUAS),
+    huruf: konversiNilai(targetUAS)
+  };
 }
 
-const s8 = simulasi(7);
-const s9 = simulasi(8);
-const s10 = simulasi(9);
+/* ===== HITUNG SKENARIO ===== */
+const s8  = simulasiTarget(7); // Lulus 8 semester
+const s9  = simulasiTarget(8); // Lulus 9 semester
+const s10 = simulasiTarget(9); // Lulus 10 semester
 
-document.getElementById("ips8").textContent = s8.ips;
-document.getElementById("uas8").textContent = s8.uas;
-document.getElementById("huruf8").textContent = s8.h;
+/* ===== ISI KE HTML ===== */
+document.getElementById("t8-ips").textContent = s8.ips;
+document.getElementById("t8-uas").textContent = "± " + s8.uas;
+document.getElementById("t8-nilai").textContent = s8.huruf;
 
-document.getElementById("ips9").textContent = s9.ips;
-document.getElementById("uas9").textContent = s9.uas;
-document.getElementById("huruf9").textContent = s9.h;
+document.getElementById("t9-ips").textContent = s9.ips;
+document.getElementById("t9-uas").textContent = "± " + s9.uas;
+document.getElementById("t9-nilai").textContent = s9.huruf;
 
-document.getElementById("ips10").textContent = s10.ips;
-document.getElementById("uas10").textContent = s10.uas;
-document.getElementById("huruf10").textContent = s10.h;
+document.getElementById("t10-ips").textContent = s10.ips;
+document.getElementById("t10-uas").textContent = "± " + s10.uas;
+document.getElementById("t10-nilai").textContent = s10.huruf;
 </script>
+
 
 </body>
 </html>
