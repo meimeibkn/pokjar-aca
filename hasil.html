@@ -348,72 +348,68 @@ tbodyNilai.innerHTML +=
 /* ===============================
    SIMULASI TARGET NILAI SEMESTER
    =============================== */
-
 (function () {
 
-  // ===== DATA DASAR =====
-  var TARGET_IPK = 3.5;
-  var TOTAL_SKS = 145;
-  var NILAI_TUTON = 80;
-  var BOBOT_TUTON = 0.3;
-  var BOBOT_UAS = 0.7;
+  const TOTAL_SKS = 145;
+  const TARGET_IPK = 3.5;
 
-  var data = sessionStorage.getItem("pokjarMahasiswa");
+  const NILAI_TUTON = 80;
+  const BOBOT_TUTON = 0.3;
+  const BOBOT_UAS = 0.7;
+
+  const data = sessionStorage.getItem("pokjarMahasiswa");
   if (!data) return;
 
-  var m = JSON.parse(data);
+  const m = JSON.parse(data);
 
-  // ===== TARGET IPS (SUDAH KAMU HITUNG SEBELUMNYA) =====
-  var targetIPS = {
-    8: parseFloat(document.getElementById("ips-8").textContent),
-    9: parseFloat(document.getElementById("ips-9").textContent),
-    10: parseFloat(document.getElementById("ips-10").textContent)
+  const ipkSaatIni = parseFloat(m.ipk);
+  const sksLulus = parseInt(m.sksLulus);
+
+  const nilaiMutuSaatIni = ipkSaatIni * sksLulus;
+  const nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
+  const sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSaatIni;
+
+  const skenario = {
+    8: { semester: 7, sksPerSemester: 20 },
+    9: { semester: 8, sksPerSemester: 24 },
+    10:{ semester: 9, sksPerSemester: 24 }
   };
 
-  // ===== HITUNG TARGET UAS =====
-  function hitungTargetUAS(ips) {
-    // Nilai Akhir = IPS × 25
-    var nilaiAkhir = ips * 25;
-
-    // Nilai Akhir = 24 + 0.7 × UAS
-    var uas = (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
-    return Math.round(uas);
-  }
-
-  // ===== KONVERSI KE HURUF MUTU =====
-  function konversiHuruf(nilaiAkhir) {
-    if (nilaiAkhir > 80) return "A";
-    if (nilaiAkhir >= 75) return "B";
-    if (nilaiAkhir >= 70) return "B-";
-    if (nilaiAkhir >= 65) return "C";
-    if (nilaiAkhir >= 60) return "C-";
-    if (nilaiAkhir >= 55) return "D";
-    if (nilaiAkhir >= 50) return "D-";
+  function konversiHuruf(nilai) {
+    if (nilai > 80) return "A";
+    if (nilai >= 75) return "B";
+    if (nilai >= 70) return "B-";
+    if (nilai >= 65) return "C";
+    if (nilai >= 60) return "C-";
+    if (nilai >= 55) return "D";
+    if (nilai >= 50) return "D-";
     return "E";
   }
 
-  // ===== ISI TABEL =====
-  [8, 9, 10].forEach(function (semester) {
+  Object.keys(skenario).forEach(function (key) {
 
-    var ips = targetIPS[semester];
-    if (isNaN(ips)) return;
+    const s = skenario[key];
+    const totalSKS = s.semester * s.sksPerSemester;
 
-    var uas = hitungTargetUAS(ips);
-    var nilaiAkhir = (BOBOT_TUTON * NILAI_TUTON) + (BOBOT_UAS * uas);
-    var huruf = konversiHuruf(nilaiAkhir);
+    const targetIPS = sisaNilaiMutu / totalSKS;
+    const nilaiAkhir = targetIPS * 25;
 
-    document.getElementById("ips-target-" + semester).textContent =
-      ips.toFixed(2);
+    const targetUAS =
+      (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
 
-    document.getElementById("uas-target-" + semester).textContent =
-      "± " + uas;
+    document.getElementById("ips-target-" + key).textContent =
+      targetIPS.toFixed(2);
 
-    document.getElementById("nilai-target-" + semester).textContent =
-      huruf;
+    document.getElementById("uas-target-" + key).textContent =
+      "± " + Math.round(targetUAS);
+
+    document.getElementById("nilai-target-" + key).textContent =
+      konversiHuruf(nilaiAkhir);
   });
 
 })();
 </script>
+
 
 </body>
 </html>
