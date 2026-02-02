@@ -270,33 +270,48 @@ fetch(url)
       ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
     }
   });
+</script>
 
-/* =====================================================
-   4. SIMULASI TARGET NILAI (LOGIKA UT BENAR)
-   ===================================================== */
+<script>
+/* ===============================
+   TARGET NILAI MINIMAL (FINAL)
+   =============================== */
+
+// DATA MAHASISWA
+const raw = sessionStorage.getItem("pokjarMahasiswa");
+if (!raw) return;
+const m = JSON.parse(raw);
+
+// KONSTANTA UT
 const TARGET_IPK = 3.5;
 const TOTAL_SKS = 145;
+
 const TUTON = 80;
 const BOBOT_TUTON = 0.30;
 const BOBOT_UAS = 0.70;
 
+// DATA DINAMIS
 const ipkSekarang = parseFloat(m.ipk);
 const sksLulus = parseInt(m.sksLulus);
 const sisaSKS = TOTAL_SKS - sksLulus;
 
-/* Hitung Target IPS Sisa Studi */
-const mutuSekarang = ipkSekarang * sksLulus;
-const mutuTarget = TARGET_IPK * TOTAL_SKS;
-let targetIPS = (mutuTarget - mutuSekarang) / sisaSKS;
+// ===== HITUNG TARGET IPS SISA STUDI =====
+let targetIPS =
+  ((TARGET_IPK * TOTAL_SKS) - (ipkSekarang * sksLulus)) / sisaSKS;
+
+// pembulatan ke atas 2 desimal
 targetIPS = Math.ceil(targetIPS * 100) / 100;
 
-/* Hitung Target UAS */
-const nilaiAkhir = targetIPS * 25;
+// ===== HITUNG TARGET UAS RATA-RATA =====
+let nilaiAkhir = targetIPS * 25;
+
 let targetUAS =
   (nilaiAkhir - (TUTON * BOBOT_TUTON)) / BOBOT_UAS;
+
+// pembulatan ke atas (aman)
 targetUAS = Math.ceil(targetUAS);
 
-/* Konversi Huruf */
+// ===== KONVERSI NILAI HURUF =====
 function konversiNilai(uas) {
   if (uas >= 80) return "A";
   if (uas >= 75) return "B";
@@ -308,20 +323,10 @@ function konversiNilai(uas) {
   return "E";
 }
 
-/* Isi ke tabel (SAMA untuk 8 / 9 / 10 semester) */
-["8", "9", "10"].forEach(id => {
-  document.getElementById("ips" + id).textContent = targetIPS.document.getElementById("ips8").textContent = targetIPS.toFixed(2);
-document.getElementById("uas8").textContent = "± " + targetUAS;
-document.getElementById("huruf8").textContent = konversiNilai(targetUAS);
-
-document.getElementById("ips9").textContent = targetIPS.toFixed(2);
-document.getElementById("uas9").textContent = "± " + targetUAS;
-document.getElementById("huruf9").textContent = konversiNilai(targetUAS);
-
-document.getElementById("ips10").textContent = targetIPS.toFixed(2);
-document.getElementById("uas10").textContent = "± " + targetUAS;
-document.getElementById("huruf10").textContent = konversiNilai(targetUAS);
-});
+// ===== ISI KE HTML (SESUSAI PATOKANMU) =====
+document.getElementById("target-ips").textContent = targetIPS.toFixed(2);
+document.getElementById("target-uas").textContent = targetUAS;
+document.getElementById("target-huruf").textContent = konversiNilai(targetUAS);
 </script>
 
 
