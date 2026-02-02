@@ -167,7 +167,7 @@
 <!-- ================= SCRIPT (SATU BLOK, FINAL & AMAN) ================= -->
 <script>
 /* =====================================================
-   AMBIL DATA MAHASISWA
+   1. AMBIL DATA MAHASISWA
    ===================================================== */
 const raw = sessionStorage.getItem("pokjarMahasiswa");
 if (!raw) {
@@ -178,7 +178,7 @@ if (!raw) {
 const m = JSON.parse(raw);
 
 /* =====================================================
-   ISI DATA MAHASISWA
+   2. ISI DATA MAHASISWA
    ===================================================== */
 document.getElementById("nama").textContent = m.nama;
 document.getElementById("nim").textContent = m.nim;
@@ -189,7 +189,7 @@ document.getElementById("sks-total").textContent = m.sksTotal;
 document.getElementById("sks-lulus").textContent = m.sksLulus;
 
 /* =====================================================
-   FETCH NILAI SEMESTER TERAKHIR
+   3. FETCH NILAI SEMESTER TERAKHIR
    ===================================================== */
 const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
 const SHEET = "Nilai Mahasiswa";
@@ -211,6 +211,7 @@ fetch(url)
     );
 
     const rows = json.table.rows || [];
+
     const nilaiTbody = document.getElementById("tabel-nilai");
     const wajibTbody = document.getElementById("tabel-wajib");
     const saranTbody = document.getElementById("tabel-saran");
@@ -231,7 +232,6 @@ fetch(url)
       const sks  = c[2]?.v || "-";
       const nilai = c[3]?.v || "-";
 
-      // TABEL NILAI
       nilaiTbody.innerHTML += `
         <tr>
           <td>${kode}</td>
@@ -240,7 +240,6 @@ fetch(url)
           <td>${nilai}</td>
         </tr>`;
 
-      // WAJIB DIULANG
       if (nilai === "E") {
         adaE = true;
         wajibTbody.innerHTML += `
@@ -252,7 +251,6 @@ fetch(url)
           </tr>`;
       }
 
-      // DISARANKAN
       if (nilai === "C") {
         jumlahC++;
         saranTbody.innerHTML += `
@@ -274,106 +272,31 @@ fetch(url)
   });
 
 /* =====================================================
-   KONVERSI NILAI UAS → HURUF
+   4. SIMULASI TARGET NILAI (LOGIKA UT BENAR)
    ===================================================== */
-function konversiNilai(uas) {
-  if (uas >= 80) return "A";
-  if (uas >= 75) return "B";
-  if (uas >= 70) return "B-";
-  if (uas >= 65) return "C";
-  if (uas >= 60) return "C-";
-  if (uas >= 55) return "D";
-  if (uas >= 50) return "D-";
-  return "E";
-}
-
-/* =====================================================
-   SIMULASI TARGET NILAI SEMESTER BERIKUTNYA
-   ===================================================== */
-const IPK_SEKARANG = parseFloat(m.ipk);
-const SKS_LULUS = parseInt(m.sksLulus);
-const TOTAL_SKS = 145;
 const TARGET_IPK = 3.5;
-
-const NILAI_TUTON = 80;
+const TOTAL_SKS = 145;
+const TUTON = 80;
 const BOBOT_TUTON = 0.30;
 const BOBOT_UAS = 0.70;
 
-/* ===== Hitung Target IPS berdasarkan SKENARIO ===== */
-function hitungTargetIPS() {
-  const mutuSekarang = IPK_SEKARANG * SKS_LULUS;
-  const mutuTarget = TARGET_IPK * TOTAL_SKS;
-  const sisaMutu = mutuTarget - mutuSekarang;
-  const sisaSKS = TOTAL_SKS - SKS_LULUS;
-  return sisaMutu / sisaSKS;
-}
-
-/* ===== Hitung Target UAS (per mata kuliah) ===== */
-function hitungTargetUAS(targetIPS) {
-  const nilaiAkhir = targetIPS * 25;
-  return Math.round(
-    (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS
-  );
-}
-
-/* ===== SKENARIO 8 / 9 / 10 SEMESTER ===== */
-const targetIPS = hitungTargetIPS();
-
-[
-  { id: 8 },
-  { id: 9 },
-  { id: 10 }
-].forEach(s => {
-  const uas = hitungTargetUAS(targetIPS);
-  document.getElementById(`ips${s.id}`).textContent = targetIPS.toFixed(2);
-  document.getElementById(`uas${s.id}`).textContent = "± " + uas;
-  document.getElementById(`huruf${s.id}`).textContent = konversiNilai(uas);
-});
-</script>
-<script>
-/* ===============================
-   KONSTANTA (FIX)
-   =============================== */
-const TARGET_IPK = 3.5;
-const TOTAL_SKS = 145;
-
-const TUTON = 80;
-const BOBOT_TUTON = 0.3;
-const BOBOT_UAS = 0.7;
-
-/* ===============================
-   DATA MAHASISWA (DINAMIS)
-   =============================== */
 const ipkSekarang = parseFloat(m.ipk);
 const sksLulus = parseInt(m.sksLulus);
-
 const sisaSKS = TOTAL_SKS - sksLulus;
 
-/* ===============================
-   HITUNG TARGET IPS SISA STUDI
-   =============================== */
+/* Hitung Target IPS Sisa Studi */
 const mutuSekarang = ipkSekarang * sksLulus;
 const mutuTarget = TARGET_IPK * TOTAL_SKS;
-const sisaMutu = mutuTarget - mutuSekarang;
-
-let targetIPS = sisaMutu / sisaSKS;
-
-/* Pembulatan ke atas (aman) */
+let targetIPS = (mutuTarget - mutuSekarang) / sisaSKS;
 targetIPS = Math.ceil(targetIPS * 100) / 100;
 
-/* ===============================
-   HITUNG TARGET UAS
-   =============================== */
-let nilaiAkhir = targetIPS * 25;
-
+/* Hitung Target UAS */
+const nilaiAkhir = targetIPS * 25;
 let targetUAS =
   (nilaiAkhir - (TUTON * BOBOT_TUTON)) / BOBOT_UAS;
-
 targetUAS = Math.ceil(targetUAS);
 
-/* ===============================
-   KONVERSI NILAI
-   =============================== */
+/* Konversi Huruf */
 function konversiNilai(uas) {
   if (uas >= 80) return "A";
   if (uas >= 75) return "B";
@@ -385,13 +308,14 @@ function konversiNilai(uas) {
   return "E";
 }
 
-/* ===============================
-   ISI KE TABEL
-   =============================== */
-document.getElementById("target-ips").textContent = targetIPS.toFixed(2);
-document.getElementById("target-uas").textContent = targetUAS;
-document.getElementById("target-huruf").textContent = konversiNilai(targetUAS);
+/* Isi ke tabel (SAMA untuk 8 / 9 / 10 semester) */
+["8", "9", "10"].forEach(id => {
+  document.getElementById("ips" + id).textContent = targetIPS.toFixed(2);
+  document.getElementById("uas" + id).textContent = "± " + targetUAS;
+  document.getElementById("huruf" + id).textContent = konversiNilai(targetUAS);
+});
 </script>
+
 
 </body>
 </html>
