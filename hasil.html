@@ -276,16 +276,6 @@ fetch(url)
    TARGET NILAI MINIMAL (FINAL & AMAN)
    =============================== */
 
-// AMBIL DATA MAHASISWA
-const raw = sessionStorage.getItem("pokjarMahasiswa");
-
-if (!raw) {
-  alert("Data mahasiswa tidak ditemukan. Silakan ulangi dari halaman awal.");
-  window.location.href = "index.html";
-} else {
-
-  const m = JSON.parse(raw);
-
   // ================= KONSTANTA UT =================
   const TARGET_IPK = 3.5;
   const TOTAL_SKS = 145;
