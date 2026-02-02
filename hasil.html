@@ -227,155 +227,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  // ================= SESSION =================
-  var raw = sessionStorage.getItem("pokjarMahasiswa");
-  if (!raw) {
-    alert("Data tidak ditemukan, silakan ulangi dari awal.");
-    location.href = "index.html";
-    return;
-  }
-  var m = JSON.parse(raw);
-  var nim = m.nim;
-
-  // ================= FETCH NILAI =================
-  var SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
-  var SHEET = "Nilai Mahasiswa";
-
-  var query = "select E, F, G, H where A = '" + nim + "'";
-
-  var url =
-    "https://docs.google.com/spreadsheets/d/" +
-    SPREADSHEET_ID +
-    "/gviz/tq?sheet=" +
-    encodeURIComponent(SHEET) +
-    "&tq=" +
-    encodeURIComponent(query);
-
-  fetch(url)
-    .then(function (res) { return res.text(); })
-    .then(function (text) {
-
-      var json = JSON.parse(
-        text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
-      );
-
-      var rows = json.table.rows;
-
-      var tbodyNilai = document.querySelector("#tabel-nilai tbody");
-      var tbodyWajib = document.getElementById("tabel-wajib-ulang");
-      var tbodySaran = document.getElementById("tabel-disarankan");
-      var ket = document.getElementById("keterangan-analisis");
-
-      tbodyNilai.innerHTML = "";
-      tbodyWajib.innerHTML = "";
-      tbodySaran.innerHTML = "";
-      ket.innerHTML = "";
-
-      if (!rows || rows.length === 0) {
-        tbodyNilai.innerHTML =
-          "<tr><td colspan='4'>Data nilai tidak ditemukan</td></tr>";
-        return;
-      }
-
-      var jumlahC = 0;
-      var adaE = false;
-
-      for (var i = 0; i < rows.length; i++) {
-        var c = rows[i].c;
-
-        var kode  = c[0]?.v || "-";
-        var nama  = c[1]?.v || "-";
-        var sks   = c[2]?.v || "-";
-        var nilai = c[3]?.v || "-";
-
-        // ===== TABEL NILAI =====
-tbodyNilai.innerHTML +=
-  "<tr>" +
-    "<td data-label='Kode MK'>" + kode + "</td>" +
-    "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-    "<td data-label='SKS'>" + sks + "</td>" +
-    "<td data-label='Nilai'>" + nilai + "</td>" +
-  "</tr>";
-
-
-        // ===== WAJIB DIULANG =====
-        if (nilai === "E") {
-          adaE = true;
- tbodyWajib.innerHTML +=
-  "<tr>" +
-    "<td data-label='Kode MK'>" + kode + "</td>" +
-    "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-    "<td data-label='SKS'>" + sks + "</td>" +
-    "<td data-label='Nilai'><span class='status-ulang'>E</span></td>" +
-  "</tr>";
-        }
-
-        // ===== DISARANKAN =====
-        if (nilai === "C") {
-          jumlahC++;
-  tbodySaran.innerHTML +=
-  "<tr>" +
-    "<td data-label='Kode MK'>" + kode + "</td>" +
-    "<td data-label='Nama Mata Kuliah'>" + nama + "</td>" +
-    "<td data-label='SKS'>" + sks + "</td>" +
-    "<td data-label='Nilai'>" + nilai + "</td>" +
-  "</tr>";
-        }
-      }
-
-      // ===== KETERANGAN =====
-      if (adaE) {
-        ket.innerHTML +=
-          "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
-      }
-      if (jumlahC > 2) {
-        ket.innerHTML +=
-          "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
-      }
-
-    })
-    .catch(function (err) {
-      console.error(err);
-      document.querySelector("#tabel-nilai tbody").innerHTML =
-        "<tr><td colspan='4'>Gagal memuat data nilai</td></tr>";
-    });
-
-});
-</script>
-<script>
-/* ===============================
-   SIMULASI TARGET NILAI SEMESTER BERIKUTNYA
-   =============================== */
-<script>
-/* ===== AMBIL ULANG DATA MAHASISWA ===== */
-var raw = sessionStorage.getItem("pokjarMahasiswa");
-if (!raw) {
-  console.error("Data mahasiswa tidak ditemukan");
-}
-var m = JSON.parse(raw);
-
-// ===== DATA DASAR (AMBIL DARI SESSION) =====
-var ipkSaatIni = parseFloat(m.ipk);        // contoh: 2.14
-var sksLulus   = parseInt(m.sksLulus);     // contoh: 11
-
-var TOTAL_SKS  = 145;
+var TOTAL_SKS = 145;
 var TARGET_IPK = 3.5;
 
-// ===== PARAMETER PENILAIAN =====
-var NILAI_TUTON = 80;
-var BOBOT_TUTON = 0.30;
-var BOBOT_UAS   = 0.70;
+var ipkSaatIni = parseFloat(m.ipk);
+var sksLulus = parseInt(m.sksLulus);
 
-// ===== HITUNG NILAI MUTU =====
 var nilaiMutuSekarang = ipkSaatIni * sksLulus;
-var nilaiMutuTarget   = TARGET_IPK * TOTAL_SKS;
-var sisaNilaiMutu     = nilaiMutuTarget - nilaiMutuSekarang;
-var sisaSKS           = TOTAL_SKS - sksLulus;
+var nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
+var sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSekarang;
+var sisaSKS = TOTAL_SKS - sksLulus;
 
-// ===== FUNGSI KONVERSI UAS → NILAI HURUF =====
-function konversiNilai(uas) {
+var TUTON = 80;
+var BOBOT_TUTON = 0.3;
+var BOBOT_UAS = 0.7;
+
+function nilaiHuruf(uas) {
   if (uas >= 80) return "A";
   if (uas >= 75) return "B";
   if (uas >= 70) return "B-";
@@ -386,45 +253,38 @@ function konversiNilai(uas) {
   return "E";
 }
 
-// ===== FUNGSI HITUNG SIMULASI =====
-function hitungSkenario(semesterTersisa) {
-
-  // rata-rata SKS per semester (proporsional)
-  var sksPerSemester = sisaSKS / semesterTersisa;
-
-  // IPS yang harus dijaga sampai lulus
+function hitung(semester) {
   var targetIPS = sisaNilaiMutu / sisaSKS;
-
-  // konversi IPS ke nilai angka
   var nilaiAngka = targetIPS * 25;
-
-  // hitung UAS
-  var targetUAS =
-    (nilaiAngka - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
+  var uas = (nilaiAngka - (BOBOT_TUTON * TUTON)) / BOBOT_UAS;
 
   return {
     ips: targetIPS.toFixed(2),
-    uas: Math.round(targetUAS),
-    huruf: konversiNilai(targetUAS)
+    uas: Math.round(uas),
+    huruf: nilaiHuruf(uas)
   };
 }
 
-// ===== HITUNG SEMUA SKENARIO =====
-var s8  = hitungSkenario(7); // lulus 8 semester
-var s9  = hitungSkenario(8); // lulus 9 semester
-var s10 = hitungSkenario(9); // lulus 10 semester
+var s8 = hitung(7);
+var s9 = hitung(8);
+var s10 = hitung(9);
 
-// ===== ISI KE TABEL =====
-document.getElementById("t8-ips").textContent  = s8.ips;
-document.getElementById("t8-uas").textContent  = "± " + s8.uas;
+// isi tabel IPK
+document.getElementById("ips-8").textContent = s8.ips;
+document.getElementById("ips-9").textContent = s9.ips;
+document.getElementById("ips-10").textContent = s10.ips;
+
+// isi tabel target nilai
+document.getElementById("t8-ips").textContent = s8.ips;
+document.getElementById("t8-uas").textContent = "± " + s8.uas;
 document.getElementById("t8-nilai").textContent = s8.huruf;
 
-document.getElementById("t9-ips").textContent  = s9.ips;
-document.getElementById("t9-uas").textContent  = "± " + s9.uas;
+document.getElementById("t9-ips").textContent = s9.ips;
+document.getElementById("t9-uas").textContent = "± " + s9.uas;
 document.getElementById("t9-nilai").textContent = s9.huruf;
 
-document.getElementById("t10-ips").textContent  = s10.ips;
-document.getElementById("t10-uas").textContent  = "± " + s10.uas;
+document.getElementById("t10-ips").textContent = s10.ips;
+document.getElementById("t10-uas").textContent = "± " + s10.uas;
 document.getElementById("t10-nilai").textContent = s10.huruf;
 </script>
 
