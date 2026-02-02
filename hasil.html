@@ -141,36 +141,36 @@
   </p>
 
   <div class="table-wrapper" style="margin-top:16px;">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Skenario</th>
-          <th>Target IPS</th>
-          <th>Target UAS Rata-rata</th>
-          <th>Nilai Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Lulus 8 Semester</td>
-          <td id="ips-target-8">-</td>
-          <td id="uas-target-8">-</td>
-          <td id="nilai-target-8">-</td>
-        </tr>
-        <tr>
-          <td>Lulus 9 Semester</td>
-          <td id="ips-target-9">-</td>
-          <td id="uas-target-9">-</td>
-          <td id="nilai-target-9">-</td>
-        </tr>
-        <tr>
-          <td>Lulus 10 Semester</td>
-          <td id="ips-target-10">-</td>
-          <td id="uas-target-10">-</td>
-          <td id="nilai-target-10">-</td>
-        </tr>
-      </tbody>
-    </table>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Skenario</th>
+      <th>Target IPS</th>
+      <th>Target UAS Rata-rata</th>
+      <th>Nilai Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lulus 8 Semester</td>
+      <td id="t8-ips">-</td>
+      <td id="t8-uas">-</td>
+      <td id="t8-nilai">-</td>
+    </tr>
+    <tr>
+      <td>Lulus 9 Semester</td>
+      <td id="t9-ips">-</td>
+      <td id="t9-uas">-</td>
+      <td id="t9-nilai">-</td>
+    </tr>
+    <tr>
+      <td>Lulus 10 Semester</td>
+      <td id="t10-ips">-</td>
+      <td id="t10-uas">-</td>
+      <td id="t10-nilai">-</td>
+    </tr>
+  </tbody>
+</table>
   </div>
 
   <p class="card-note">
@@ -346,69 +346,81 @@ tbodyNilai.innerHTML +=
 </script>
 <script>
 /* ===============================
-   SIMULASI TARGET NILAI SEMESTER
+   SIMULASI TARGET NILAI SEMESTER BERIKUTNYA
    =============================== */
-(function () {
 
-  const TOTAL_SKS = 145;
-  const TARGET_IPK = 3.5;
+// ===== DATA DASAR (AMBIL DARI SESSION) =====
+var ipkSaatIni = parseFloat(m.ipk);        // contoh: 2.14
+var sksLulus   = parseInt(m.sksLulus);     // contoh: 11
 
-  const NILAI_TUTON = 80;
-  const BOBOT_TUTON = 0.3;
-  const BOBOT_UAS = 0.7;
+var TOTAL_SKS  = 145;
+var TARGET_IPK = 3.5;
 
-  const data = sessionStorage.getItem("pokjarMahasiswa");
-  if (!data) return;
+// ===== PARAMETER PENILAIAN =====
+var NILAI_TUTON = 80;
+var BOBOT_TUTON = 0.30;
+var BOBOT_UAS   = 0.70;
 
-  const m = JSON.parse(data);
+// ===== HITUNG NILAI MUTU =====
+var nilaiMutuSekarang = ipkSaatIni * sksLulus;
+var nilaiMutuTarget   = TARGET_IPK * TOTAL_SKS;
+var sisaNilaiMutu     = nilaiMutuTarget - nilaiMutuSekarang;
+var sisaSKS           = TOTAL_SKS - sksLulus;
 
-  const ipkSaatIni = parseFloat(m.ipk);
-  const sksLulus = parseInt(m.sksLulus);
+// ===== FUNGSI KONVERSI UAS → NILAI HURUF =====
+function konversiNilai(uas) {
+  if (uas >= 80) return "A";
+  if (uas >= 75) return "B";
+  if (uas >= 70) return "B-";
+  if (uas >= 65) return "C";
+  if (uas >= 60) return "C-";
+  if (uas >= 55) return "D";
+  if (uas >= 50) return "D-";
+  return "E";
+}
 
-  const nilaiMutuSaatIni = ipkSaatIni * sksLulus;
-  const nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
-  const sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSaatIni;
+// ===== FUNGSI HITUNG SIMULASI =====
+function hitungSkenario(semesterTersisa) {
 
-  const skenario = {
-    8: { semester: 7, sksPerSemester: 20 },
-    9: { semester: 8, sksPerSemester: 24 },
-    10:{ semester: 9, sksPerSemester: 24 }
+  // rata-rata SKS per semester (proporsional)
+  var sksPerSemester = sisaSKS / semesterTersisa;
+
+  // IPS yang harus dijaga sampai lulus
+  var targetIPS = sisaNilaiMutu / sisaSKS;
+
+  // konversi IPS ke nilai angka
+  var nilaiAngka = targetIPS * 25;
+
+  // hitung UAS
+  var targetUAS =
+    (nilaiAngka - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
+
+  return {
+    ips: targetIPS.toFixed(2),
+    uas: Math.round(targetUAS),
+    huruf: konversiNilai(targetUAS)
   };
+}
 
-  function konversiHuruf(nilai) {
-    if (nilai > 80) return "A";
-    if (nilai >= 75) return "B";
-    if (nilai >= 70) return "B-";
-    if (nilai >= 65) return "C";
-    if (nilai >= 60) return "C-";
-    if (nilai >= 55) return "D";
-    if (nilai >= 50) return "D-";
-    return "E";
-  }
+// ===== HITUNG SEMUA SKENARIO =====
+var s8  = hitungSkenario(7); // lulus 8 semester
+var s9  = hitungSkenario(8); // lulus 9 semester
+var s10 = hitungSkenario(9); // lulus 10 semester
 
-  Object.keys(skenario).forEach(function (key) {
+// ===== ISI KE TABEL =====
+document.getElementById("t8-ips").textContent  = s8.ips;
+document.getElementById("t8-uas").textContent  = "± " + s8.uas;
+document.getElementById("t8-nilai").textContent = s8.huruf;
 
-    const s = skenario[key];
-    const totalSKS = s.semester * s.sksPerSemester;
+document.getElementById("t9-ips").textContent  = s9.ips;
+document.getElementById("t9-uas").textContent  = "± " + s9.uas;
+document.getElementById("t9-nilai").textContent = s9.huruf;
 
-    const targetIPS = sisaNilaiMutu / totalSKS;
-    const nilaiAkhir = targetIPS * 25;
-
-    const targetUAS =
-      (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
-
-    document.getElementById("ips-target-" + key).textContent =
-      targetIPS.toFixed(2);
-
-    document.getElementById("uas-target-" + key).textContent =
-      "± " + Math.round(targetUAS);
-
-    document.getElementById("nilai-target-" + key).textContent =
-      konversiHuruf(nilaiAkhir);
-  });
-
-})();
+document.getElementById("t10-ips").textContent  = s10.ips;
+document.getElementById("t10-uas").textContent  = "± " + s10.uas;
+document.getElementById("t10-nilai").textContent = s10.huruf;
 </script>
+
 
 
 </body>
