@@ -225,6 +225,164 @@ document.getElementById("ips10").textContent = s10.ips;
 document.getElementById("uas10").textContent = "± " + s10.uas;
 document.getElementById("huruf10").textContent = s10.huruf;
 </script>
+<script>
+/* ===============================
+   AMBIL DATA MAHASISWA
+   =============================== */
+const raw = sessionStorage.getItem("pokjarMahasiswa");
+if (!raw) {
+  alert("Data mahasiswa tidak ditemukan. Silakan ulangi dari halaman awal.");
+  window.location.href = "index.html";
+}
+const m = JSON.parse(raw);
+
+/* ===============================
+   ISI DATA MAHASISWA
+   =============================== */
+document.getElementById("nama").textContent = m.nama;
+document.getElementById("nim").textContent = m.nim;
+document.getElementById("jurusan").textContent = m.jurusan;
+document.getElementById("ipk").textContent = m.ipk;
+document.getElementById("ips").textContent = m.ips;
+document.getElementById("sks-total").textContent = m.sksTotal;
+document.getElementById("sks-lulus").textContent = m.sksLulus;
+
+/* ===============================
+   FETCH NILAI SEMESTER
+   =============================== */
+const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
+const SHEET = "Nilai Mahasiswa";
+
+const query = "select E,F,G,H where A = '" + m.nim + "'";
+const url =
+  "https://docs.google.com/spreadsheets/d/" +
+  SPREADSHEET_ID +
+  "/gviz/tq?sheet=" +
+  encodeURIComponent(SHEET) +
+  "&tq=" +
+  encodeURIComponent(query);
+
+fetch(url)
+  .then(res => res.text())
+  .then(text => {
+    const json = JSON.parse(
+      text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1)
+    );
+
+    const rows = json.table.rows || [];
+    const nilaiTbody = document.getElementById("tabel-nilai");
+    const wajibTbody = document.getElementById("tabel-wajib");
+    const saranTbody = document.getElementById("tabel-saran");
+    const ket = document.getElementById("keterangan");
+
+    nilaiTbody.innerHTML = "";
+    wajibTbody.innerHTML = "";
+    saranTbody.innerHTML = "";
+    ket.innerHTML = "";
+
+    let jumlahC = 0;
+    let adaE = false;
+
+    rows.forEach(r => {
+      const c = r.c;
+      const kode = c[0]?.v || "-";
+      const nama = c[1]?.v || "-";
+      const sks  = c[2]?.v || "-";
+      const nilai = c[3]?.v || "-";
+
+      nilaiTbody.innerHTML += `
+        <tr>
+          <td>${kode}</td>
+          <td>${nama}</td>
+          <td>${sks}</td>
+          <td>${nilai}</td>
+        </tr>`;
+
+      if (nilai === "E") {
+        adaE = true;
+        wajibTbody.innerHTML += `
+          <tr>
+            <td>${kode}</td>
+            <td>${nama}</td>
+            <td>${sks}</td>
+            <td>${nilai}</td>
+          </tr>`;
+      }
+
+      if (nilai === "C") {
+        jumlahC++;
+        saranTbody.innerHTML += `
+          <tr>
+            <td>${kode}</td>
+            <td>${nama}</td>
+            <td>${sks}</td>
+            <td>${nilai}</td>
+          </tr>`;
+      }
+    });
+
+    if (adaE) {
+      ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai E yang wajib diulang.</li>";
+    }
+    if (jumlahC > 2) {
+      ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
+    }
+  });
+
+/* ===============================
+   SIMULASI TARGET NILAI
+   =============================== */
+const IPK_SEKARANG = parseFloat(m.ipk);
+const SKS_LULUS = parseInt(m.sksLulus);
+const TOTAL_SKS = 145;
+const TARGET_IPK = 3.5;
+
+const NILAI_TUTON = 80;
+const BOBOT_TUTON = 0.3;
+const BOBOT_UAS = 0.7;
+
+const nilaiMutuSekarang = IPK_SEKARANG * SKS_LULUS;
+const nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
+const sisaMutu = nilaiMutuTarget - nilaiMutuSekarang;
+const SKS_RATA = 22;
+
+function konversi(uas) {
+  if (uas >= 80) return "A";
+  if (uas >= 75) return "B";
+  if (uas >= 70) return "B-";
+  if (uas >= 65) return "C";
+  if (uas >= 60) return "C-";
+  if (uas >= 55) return "D";
+  if (uas >= 50) return "D-";
+  return "E";
+}
+
+function simulasi(semester) {
+  const ips = (sisaMutu / semester) / SKS_RATA;
+  const uas = (ips * 100 - BOBOT_TUTON * NILAI_TUTON) / BOBOT_UAS;
+  return {
+    ips: ips.toFixed(2),
+    uas: Math.round(uas),
+    huruf: konversi(uas)
+  };
+}
+
+const s8 = simulasi(7);
+const s9 = simulasi(8);
+const s10 = simulasi(9);
+
+document.getElementById("ips8").textContent = s8.ips;
+document.getElementById("uas8").textContent = "± " + s8.uas;
+document.getElementById("huruf8").textContent = s8.huruf;
+
+document.getElementById("ips9").textContent = s9.ips;
+document.getElementById("uas9").textContent = "± " + s9.uas;
+document.getElementById("huruf9").textContent = s9.huruf;
+
+document.getElementById("ips10").textContent = s10.ips;
+document.getElementById("uas10").textContent = "± " + s10.uas;
+document.getElementById("huruf10").textContent = s10.huruf;
+</script>
 
 
 </body>
