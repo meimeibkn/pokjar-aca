@@ -285,12 +285,10 @@ var s8 = hitung(7);
 var s9 = hitung(8);
 var s10 = hitung(9);
 
-// isi tabel IPK
 document.getElementById("ips-8").textContent = s8.ips;
 document.getElementById("ips-9").textContent = s9.ips;
 document.getElementById("ips-10").textContent = s10.ips;
 
-// isi tabel target nilai
 document.getElementById("t8-ips").textContent = s8.ips;
 document.getElementById("t8-uas").textContent = "± " + s8.uas;
 document.getElementById("t8-nilai").textContent = s8.huruf;
@@ -303,15 +301,6 @@ document.getElementById("t10-ips").textContent = s10.ips;
 document.getElementById("t10-uas").textContent = "± " + s10.uas;
 document.getElementById("t10-nilai").textContent = s10.huruf;
 </script>
-<script>
-var raw = sessionStorage.getItem("pokjarMahasiswa");
-if (!raw) {
-  alert("Data mahasiswa tidak ditemukan");
-  window.location.href = "index.html";
-}
-var m = JSON.parse(raw);
-</script>
-
 
 
 </body>
