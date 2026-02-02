@@ -154,78 +154,6 @@
 
 <!-- ================= SCRIPT (SATU BLOK, AMAN) ================= -->
 <script>
-/* ===== AMBIL DATA ===== */
-const rawSim = sessionStorage.getItem("pokjarMahasiswa");
-if (!rawSim) {
-  alert("Data mahasiswa tidak ditemukan");
-}
-const mSim = JSON.parse(rawSim);
-
-/* ===== DATA DASAR ===== */
-const IPK_SEKARANG = parseFloat(mSim.ipk);
-const SKS_LULUS = parseInt(mSim.sksLulus);
-const TOTAL_SKS = 145;
-const TARGET_IPK = 3.5;
-
-/* ===== PENILAIAN ===== */
-const NILAI_TUTON = 80;
-const BOBOT_TUTON = 0.30;
-const BOBOT_UAS = 0.70;
-
-/* ===== HITUNG MUTU ===== */
-const nilaiMutuSekarang = IPK_SEKARANG * SKS_LULUS;
-const nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
-const sisaNilaiMutu = nilaiMutuTarget - nilaiMutuSekarang;
-
-/* ===== ASUMSI ===== */
-const SKS_RATA_SEMESTER = 22;
-
-/* ===== KONVERSI ===== */
-function konversiNilai(uas) {
-  if (uas >= 80) return "A";
-  if (uas >= 75) return "B";
-  if (uas >= 70) return "B-";
-  if (uas >= 65) return "C";
-  if (uas >= 60) return "C-";
-  if (uas >= 55) return "D";
-  if (uas >= 50) return "D-";
-  return "E";
-}
-
-/* ===== SIMULASI ===== */
-function simulasiTarget(semesterTersisa) {
-  const mutuPerSemester = sisaNilaiMutu / semesterTersisa;
-  const targetIPS = mutuPerSemester / SKS_RATA_SEMESTER;
-  const nilaiAngka = targetIPS * 25;
-  const uas =
-    (nilaiAngka - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
-
-  return {
-    ips: targetIPS.toFixed(2),
-    uas: Math.round(uas),
-    huruf: konversiNilai(uas)
-  };
-}
-
-/* ===== BUAT VARIABEL DAN LANGSUNG PAKAI ===== */
-const s8 = simulasiTarget(7);
-const s9 = simulasiTarget(8);
-const s10 = simulasiTarget(9);
-
-/* ===== ISI KE HTML ===== */
-document.getElementById("ips8").textContent = s8.ips;
-document.getElementById("uas8").textContent = "± " + s8.uas;
-document.getElementById("huruf8").textContent = s8.huruf;
-
-document.getElementById("ips9").textContent = s9.ips;
-document.getElementById("uas9").textContent = "± " + s9.uas;
-document.getElementById("huruf9").textContent = s9.huruf;
-
-document.getElementById("ips10").textContent = s10.ips;
-document.getElementById("uas10").textContent = "± " + s10.uas;
-document.getElementById("huruf10").textContent = s10.huruf;
-</script>
-<script>
 /* ===============================
    AMBIL DATA MAHASISWA
    =============================== */
@@ -383,6 +311,7 @@ document.getElementById("ips10").textContent = s10.ips;
 document.getElementById("uas10").textContent = "± " + s10.uas;
 document.getElementById("huruf10").textContent = s10.huruf;
 </script>
+
 
 
 </body>
