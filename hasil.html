@@ -284,30 +284,27 @@ function konversi(uas) {
   if (uas >= 50) return "D-";
   return "E";
 }
+function simulasiTarget(targetIPS) {
+  const nilaiAkhir = targetIPS * 25;
+  const uas = (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
 
-function simulasi(semester) {
-  const ips = (sisaMutu / semester) / SKS_RATA;
-  const uas = (ips * 100 - BOBOT_TUTON * NILAI_TUTON) / BOBOT_UAS;
   return {
-    ips: ips.toFixed(2),
     uas: Math.round(uas),
-    huruf: konversi(uas)
+    huruf: konversiNilai(uas)
   };
 }
 
-const s8 = simulasi(7);
-const s9 = simulasi(8);
-const s10 = simulasi(9);
+// contoh pemakaian
+const s8 = simulasiTarget(3.14);
+const s9 = simulasiTarget(2.75);
+const s10 = simulasiTarget(2.44);
 
-document.getElementById("ips8").textContent = s8.ips;
 document.getElementById("uas8").textContent = "± " + s8.uas;
 document.getElementById("huruf8").textContent = s8.huruf;
 
-document.getElementById("ips9").textContent = s9.ips;
 document.getElementById("uas9").textContent = "± " + s9.uas;
 document.getElementById("huruf9").textContent = s9.huruf;
 
-document.getElementById("ips10").textContent = s10.ips;
 document.getElementById("uas10").textContent = "± " + s10.uas;
 document.getElementById("huruf10").textContent = s10.huruf;
 </script>
