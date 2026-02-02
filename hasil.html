@@ -348,6 +348,13 @@ tbodyNilai.innerHTML +=
 /* ===============================
    SIMULASI TARGET NILAI SEMESTER BERIKUTNYA
    =============================== */
+<script>
+/* ===== AMBIL ULANG DATA MAHASISWA ===== */
+var raw = sessionStorage.getItem("pokjarMahasiswa");
+if (!raw) {
+  console.error("Data mahasiswa tidak ditemukan");
+}
+var m = JSON.parse(raw);
 
 // ===== DATA DASAR (AMBIL DARI SESSION) =====
 var ipkSaatIni = parseFloat(m.ipk);        // contoh: 2.14
