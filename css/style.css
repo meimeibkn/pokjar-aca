@@ -151,6 +151,41 @@ th {
   font-size: 13px;
   font-weight: 600;
 }
+/* ===== CARD DESC & NOTE ===== */
+.card-desc {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.card-note {
+  font-size: 13px;
+  color: #555;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+/* ===== BADGE NILAI ===== */
+.badge-nilai {
+  display: inline-block;
+  background: linear-gradient(135deg, #2c6ba0, #192f52);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===== TABLE FIX (DESKTOP & MOBILE SAMA) ===== */
+.table-fixed {
+  table-layout: fixed;
+}
+
+.table-fixed th,
+.table-fixed td {
+  white-space: nowrap;
+}
 
 /* ===== MOBILE ONLY (TIDAK UBAH STRUKTUR) ===== */
 @media (max-width: 600px) {
