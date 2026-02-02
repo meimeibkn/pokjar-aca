@@ -196,12 +196,33 @@ th {
 @media (max-width: 600px) {
 
   .hero {
-    min-height: auto;          /* ⬅️ INI KUNCINYA */
+    min-height: auto;          
+    
+    /* ⬅️ INI KUNCINYA */
     padding: 32px 16px 24px;
     align-items: flex-start;
   }
 
   .hero-content {
     margin-top: 12px;
+  }
+}
+/* ================= MOBILE HERO TYPOGRAPHY FIX ================= */
+@media (max-width: 600px) {
+
+  .hero-logo {
+    width: 64px;          /* logo lebih kecil & proporsional */
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-size: 26px;      /* ⬅️ ini yang bikin mirip gambar 2 */
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 6px 14px;
   }
 }
