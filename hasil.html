@@ -152,21 +152,22 @@
   * Simulasi bersifat pendampingan akademik dan bukan keputusan resmi Universitas Terbuka.
 </footer>
 
-<!-- ================= SCRIPT (SATU BLOK, AMAN) ================= -->
+<!-- ================= SCRIPT (SATU BLOK, FINAL & AMAN) ================= -->
 <script>
-/* ===============================
+/* =====================================================
    AMBIL DATA MAHASISWA
-   =============================== */
+   ===================================================== */
 const raw = sessionStorage.getItem("pokjarMahasiswa");
 if (!raw) {
   alert("Data mahasiswa tidak ditemukan. Silakan ulangi dari halaman awal.");
   window.location.href = "index.html";
+  throw new Error("Session kosong");
 }
 const m = JSON.parse(raw);
 
-/* ===============================
+/* =====================================================
    ISI DATA MAHASISWA
-   =============================== */
+   ===================================================== */
 document.getElementById("nama").textContent = m.nama;
 document.getElementById("nim").textContent = m.nim;
 document.getElementById("jurusan").textContent = m.jurusan;
@@ -175,9 +176,9 @@ document.getElementById("ips").textContent = m.ips;
 document.getElementById("sks-total").textContent = m.sksTotal;
 document.getElementById("sks-lulus").textContent = m.sksLulus;
 
-/* ===============================
-   FETCH NILAI SEMESTER
-   =============================== */
+/* =====================================================
+   FETCH NILAI SEMESTER TERAKHIR
+   ===================================================== */
 const SPREADSHEET_ID = "1SvU-xNrzFI9_VeOyjbpEx4oO5g9G45aR";
 const SHEET = "Nilai Mahasiswa";
 
@@ -212,12 +213,13 @@ fetch(url)
     let adaE = false;
 
     rows.forEach(r => {
-      const c = r.c;
+      const c = r.c || [];
       const kode = c[0]?.v || "-";
       const nama = c[1]?.v || "-";
       const sks  = c[2]?.v || "-";
       const nilai = c[3]?.v || "-";
 
+      // TABEL NILAI
       nilaiTbody.innerHTML += `
         <tr>
           <td>${kode}</td>
@@ -226,6 +228,7 @@ fetch(url)
           <td>${nilai}</td>
         </tr>`;
 
+      // WAJIB DIULANG
       if (nilai === "E") {
         adaE = true;
         wajibTbody.innerHTML += `
@@ -237,6 +240,7 @@ fetch(url)
           </tr>`;
       }
 
+      // DISARANKAN
       if (nilai === "C") {
         jumlahC++;
         saranTbody.innerHTML += `
@@ -250,31 +254,17 @@ fetch(url)
     });
 
     if (adaE) {
-      ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai E yang wajib diulang.</li>";
+      ket.innerHTML += "<li>Terdapat mata kuliah dengan nilai <strong>E</strong> yang wajib diulang.</li>";
     }
     if (jumlahC > 2) {
-      ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai C lebih dari 2, disarankan mengulang sebagian.</li>";
+      ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
     }
   });
 
-/* ===============================
-   SIMULASI TARGET NILAI
-   =============================== */
-const IPK_SEKARANG = parseFloat(m.ipk);
-const SKS_LULUS = parseInt(m.sksLulus);
-const TOTAL_SKS = 145;
-const TARGET_IPK = 3.5;
-
-const NILAI_TUTON = 80;
-const BOBOT_TUTON = 0.3;
-const BOBOT_UAS = 0.7;
-
-const nilaiMutuSekarang = IPK_SEKARANG * SKS_LULUS;
-const nilaiMutuTarget = TARGET_IPK * TOTAL_SKS;
-const sisaMutu = nilaiMutuTarget - nilaiMutuSekarang;
-const SKS_RATA = 22;
-
-function konversi(uas) {
+/* =====================================================
+   KONVERSI NILAI UAS → HURUF
+   ===================================================== */
+function konversiNilai(uas) {
   if (uas >= 80) return "A";
   if (uas >= 75) return "B";
   if (uas >= 70) return "B-";
@@ -284,32 +274,50 @@ function konversi(uas) {
   if (uas >= 50) return "D-";
   return "E";
 }
-function simulasiTarget(targetIPS) {
-  const nilaiAkhir = targetIPS * 25;
-  const uas = (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS;
 
-  return {
-    uas: Math.round(uas),
-    huruf: konversiNilai(uas)
-  };
+/* =====================================================
+   SIMULASI TARGET NILAI SEMESTER BERIKUTNYA
+   ===================================================== */
+const IPK_SEKARANG = parseFloat(m.ipk);
+const SKS_LULUS = parseInt(m.sksLulus);
+const TOTAL_SKS = 145;
+const TARGET_IPK = 3.5;
+
+const NILAI_TUTON = 80;
+const BOBOT_TUTON = 0.30;
+const BOBOT_UAS = 0.70;
+
+/* ===== Hitung Target IPS berdasarkan SKENARIO ===== */
+function hitungTargetIPS() {
+  const mutuSekarang = IPK_SEKARANG * SKS_LULUS;
+  const mutuTarget = TARGET_IPK * TOTAL_SKS;
+  const sisaMutu = mutuTarget - mutuSekarang;
+  const sisaSKS = TOTAL_SKS - SKS_LULUS;
+  return sisaMutu / sisaSKS;
 }
 
-// contoh pemakaian
-const s8 = simulasiTarget(3.14);
-const s9 = simulasiTarget(2.75);
-const s10 = simulasiTarget(2.44);
+/* ===== Hitung Target UAS (per mata kuliah) ===== */
+function hitungTargetUAS(targetIPS) {
+  const nilaiAkhir = targetIPS * 25;
+  return Math.round(
+    (nilaiAkhir - (BOBOT_TUTON * NILAI_TUTON)) / BOBOT_UAS
+  );
+}
 
-document.getElementById("uas8").textContent = "± " + s8.uas;
-document.getElementById("huruf8").textContent = s8.huruf;
+/* ===== SKENARIO 8 / 9 / 10 SEMESTER ===== */
+const targetIPS = hitungTargetIPS();
 
-document.getElementById("uas9").textContent = "± " + s9.uas;
-document.getElementById("huruf9").textContent = s9.huruf;
-
-document.getElementById("uas10").textContent = "± " + s10.uas;
-document.getElementById("huruf10").textContent = s10.huruf;
+[
+  { id: 8 },
+  { id: 9 },
+  { id: 10 }
+].forEach(s => {
+  const uas = hitungTargetUAS(targetIPS);
+  document.getElementById(`ips${s.id}`).textContent = targetIPS.toFixed(2);
+  document.getElementById(`uas${s.id}`).textContent = "± " + uas;
+  document.getElementById(`huruf${s.id}`).textContent = konversiNilai(uas);
+});
 </script>
-
-
 
 </body>
 </html>
