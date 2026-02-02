@@ -270,61 +270,70 @@ fetch(url)
       ket.innerHTML += "<li>Jumlah mata kuliah dengan nilai <strong>C</strong> lebih dari 2, disarankan mengulang sebagian.</li>";
     }
   });
+  </script>
+<script>
 /* ===============================
-   TARGET NILAI MINIMAL (FINAL)
+   TARGET NILAI MINIMAL (FINAL & AMAN)
    =============================== */
 
-// DATA MAHASISWA
+// AMBIL DATA MAHASISWA
 const raw = sessionStorage.getItem("pokjarMahasiswa");
-if (!raw) return;
-const m = JSON.parse(raw);
 
-// KONSTANTA UT
-const TARGET_IPK = 3.5;
-const TOTAL_SKS = 145;
+if (!raw) {
+  alert("Data mahasiswa tidak ditemukan. Silakan ulangi dari halaman awal.");
+  window.location.href = "index.html";
+} else {
 
-const TUTON = 80;
-const BOBOT_TUTON = 0.30;
-const BOBOT_UAS = 0.70;
+  const m = JSON.parse(raw);
 
-// DATA DINAMIS
-const ipkSekarang = parseFloat(m.ipk);
-const sksLulus = parseInt(m.sksLulus);
-const sisaSKS = TOTAL_SKS - sksLulus;
+  // ================= KONSTANTA UT =================
+  const TARGET_IPK = 3.5;
+  const TOTAL_SKS = 145;
 
-// ===== HITUNG TARGET IPS SISA STUDI =====
-let targetIPS =
-  ((TARGET_IPK * TOTAL_SKS) - (ipkSekarang * sksLulus)) / sisaSKS;
+  const TUTON = 80;
+  const BOBOT_TUTON = 0.30;
+  const BOBOT_UAS = 0.70;
 
-// pembulatan ke atas 2 desimal
-targetIPS = Math.ceil(targetIPS * 100) / 100;
+  // ================= DATA DINAMIS =================
+  const ipkSekarang = parseFloat(m.ipk);
+  const sksLulus = parseInt(m.sksLulus);
+  const sisaSKS = TOTAL_SKS - sksLulus;
 
-// ===== HITUNG TARGET UAS RATA-RATA =====
-let nilaiAkhir = targetIPS * 25;
+  // ================= HITUNG TARGET IPS =================
+  let targetIPS =
+    ((TARGET_IPK * TOTAL_SKS) - (ipkSekarang * sksLulus)) / sisaSKS;
 
-let targetUAS =
-  (nilaiAkhir - (TUTON * BOBOT_TUTON)) / BOBOT_UAS;
+  // pembulatan ke atas (aman)
+  targetIPS = Math.ceil(targetIPS * 100) / 100;
 
-// pembulatan ke atas (aman)
-targetUAS = Math.ceil(targetUAS);
+  // ================= HITUNG TARGET UAS =================
+  let nilaiAkhir = targetIPS * 25;
 
-// ===== KONVERSI NILAI HURUF =====
-function konversiNilai(uas) {
-  if (uas >= 80) return "A";
-  if (uas >= 75) return "B";
-  if (uas >= 70) return "B-";
-  if (uas >= 65) return "C";
-  if (uas >= 60) return "C-";
-  if (uas >= 55) return "D";
-  if (uas >= 50) return "D-";
-  return "E";
+  let targetUAS =
+    (nilaiAkhir - (TUTON * BOBOT_TUTON)) / BOBOT_UAS;
+
+  targetUAS = Math.ceil(targetUAS);
+
+  // ================= KONVERSI NILAI =================
+  function konversiNilai(uas) {
+    if (uas >= 80) return "A";
+    if (uas >= 75) return "B";
+    if (uas >= 70) return "B-";
+    if (uas >= 65) return "C";
+    if (uas >= 60) return "C-";
+    if (uas >= 55) return "D";
+    if (uas >= 50) return "D-";
+    return "E";
+  }
+
+  // ================= ISI KE HTML =================
+  document.getElementById("target-ips").textContent = targetIPS.toFixed(2);
+  document.getElementById("target-uas").textContent = targetUAS;
+  document.getElementById("target-huruf").textContent = konversiNilai(targetUAS);
+
 }
-
-// ===== ISI KE HTML (SESUSAI PATOKANMU) =====
-document.getElementById("target-ips").textContent = targetIPS.toFixed(2);
-document.getElementById("target-uas").textContent = targetUAS;
-document.getElementById("target-huruf").textContent = konversiNilai(targetUAS);
 </script>
+
 
 
 </body>
