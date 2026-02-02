@@ -310,9 +310,17 @@ function konversiNilai(uas) {
 
 /* Isi ke tabel (SAMA untuk 8 / 9 / 10 semester) */
 ["8", "9", "10"].forEach(id => {
-  document.getElementById("ips" + id).textContent = targetIPS.toFixed(2);
-  document.getElementById("uas" + id).textContent = "± " + targetUAS;
-  document.getElementById("huruf" + id).textContent = konversiNilai(targetUAS);
+  document.getElementById("ips" + id).textContent = targetIPS.document.getElementById("ips8").textContent = targetIPS.toFixed(2);
+document.getElementById("uas8").textContent = "± " + targetUAS;
+document.getElementById("huruf8").textContent = konversiNilai(targetUAS);
+
+document.getElementById("ips9").textContent = targetIPS.toFixed(2);
+document.getElementById("uas9").textContent = "± " + targetUAS;
+document.getElementById("huruf9").textContent = konversiNilai(targetUAS);
+
+document.getElementById("ips10").textContent = targetIPS.toFixed(2);
+document.getElementById("uas10").textContent = "± " + targetUAS;
+document.getElementById("huruf10").textContent = konversiNilai(targetUAS);
 });
 </script>
 
