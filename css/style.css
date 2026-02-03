@@ -251,21 +251,31 @@ th {
   color: #fff;
 }
 
-/* ================= ICON STRATEGY (CENTER FIX) ================= */
+/* ================= STRATEGY CARD ================= */
+.strategy-card {
+  position: relative; /* WAJIB */
+  padding-top: 64px;   /* ruang untuk ikon */
+  border-radius: 18px;
+}
+
+/* ================= ICON POSITION FIX ================= */
 .strategy-icon {
+  position: absolute;
+  top: -32px;               /* naik setengah ukuran icon */
+  left: 50%;
+  transform: translateX(-50%);
+  
   width: 64px;
   height: 64px;
-  margin: -32px auto 12px auto; /* PAKSA CENTER */
   background: #ffffff;
   border-radius: 50%;
+  
   display: flex;
   align-items: center;
   justify-content: center;
+
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  overflow: hidden;
-  position: relative;
-  left: 0;
-  right: 0;
+  z-index: 2;
 }
 
 .strategy-icon img {
@@ -274,17 +284,21 @@ th {
   object-fit: contain;
 }
 
-/* ===== MOBILE ===== */
+/* ================= MOBILE ================= */
 @media (max-width: 600px) {
+  .strategy-card {
+    padding-top: 56px;
+  }
+
   .strategy-icon {
     width: 56px;
     height: 56px;
-    margin: -28px auto 10px auto;
+    top: -28px;
   }
 
   .strategy-icon img {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 }
 
