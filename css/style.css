@@ -251,32 +251,35 @@ th {
   color: #fff;
 }
 
-/* ================= ICON STRATEGY ================= */
+/* ================= ICON STRATEGY (CENTER FIX) ================= */
 .strategy-icon {
   width: 64px;
   height: 64px;
-  margin: -32px auto 12px;
+  margin: -32px auto 12px auto; /* PAKSA CENTER */
   background: #ffffff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  overflow: hidden; /* penting agar tetap rapi */
+  overflow: hidden;
+  position: relative;
+  left: 0;
+  right: 0;
 }
 
 .strategy-icon img {
-  width: 40px;        /* ukuran asli ikon */
+  width: 40px;
   height: 40px;
-  object-fit: contain; /* INI KUNCI: tidak terpotong */
+  object-fit: contain;
 }
 
-/* ===== MOBILE TUNING ===== */
+/* ===== MOBILE ===== */
 @media (max-width: 600px) {
   .strategy-icon {
     width: 56px;
     height: 56px;
-    margin: -28px auto 10px;
+    margin: -28px auto 10px auto;
   }
 
   .strategy-icon img {
@@ -284,6 +287,7 @@ th {
     height: 36px;
   }
 }
+
 
 .strategi-box h3 {
   text-align: center;
