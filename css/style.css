@@ -235,10 +235,10 @@ th {
 
 .strategi-box {
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible; /* PENTING */
   background: #f2f4f7;
-  padding: 20px;
-  position: relative;
+  padding: 64px 20px 20px; /* ruang ikon */
+  position: relative;      /* INI KUNCINYA */
 }
 
 .strategi-box.dark {
@@ -251,12 +251,7 @@ th {
   color: #fff;
 }
 
-/* ================= STRATEGY CARD ================= */
-.strategy-card {
-  position: relative; /* WAJIB */
-  padding-top: 64px;   /* ruang untuk ikon */
-  border-radius: 18px;
-}
+
 
 /* ================= ICON POSITION FIX ================= */
 .strategy-icon {
