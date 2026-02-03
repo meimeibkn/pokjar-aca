@@ -226,68 +226,59 @@ th {
     padding: 6px 14px;
   }
 }
-/* ================= STRATEGI BELAJAR ================= */
+/* ================= STRATEGI GRID ================= */
 .strategi-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
+/* ================= STRATEGI BOX (PARENT WAJIB) ================= */
 .strategi-box {
+  position: relative;              /* 🔴 INI KUNCI UTAMA */
   border-radius: 16px;
-  overflow: visible; /* PENTING */
-  background: #f2f4f7;
-  padding: 64px 20px 20px; /* ruang ikon */
-  position: relative;      /* INI KUNCINYA */
+  overflow: visible;               /* icon boleh keluar card */
+  padding: 64px 20px 20px;         /* ruang icon di atas */
 }
 
+/* WARNA */
 .strategi-box.dark {
   background: #192f52;
-  color: #fff;
+  color: #ffffff;
 }
 
 .strategi-box.blue {
   background: #2c6ba0;
-  color: #fff;
+  color: #ffffff;
 }
-/* ================= ICON STRATEGY ================= */
+
+/* ================= ICON STRATEGY (CENTER FIX) ================= */
 .strategy-icon {
   position: absolute;
   top: -32px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%);     /* CENTER HORIZONTAL */
+
   width: 64px;
   height: 64px;
   background: #ffffff;
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  z-index: 2;
+  z-index: 10;
 }
 
 .strategy-icon img {
-  width: 40px;        /* ukuran asli ikon */
+  width: 40px;
   height: 40px;
-  object-fit: contain; /* INI KUNCI: tidak terpotong */
+  object-fit: contain;             /* icon tidak terpotong */
 }
 
-/* ===== MOBILE TUNING ===== */
-@media (max-width: 600px) {
-  .strategy-icon {
-    width: 56px;
-    height: 56px;
-    margin: -28px auto 10px;
-  }
-
-  .strategy-icon img {
-    width: 36px;
-    height: 36px;
-  }
-}
-
-
+/* ================= TEXT ================= */
 .strategi-box h3 {
   text-align: center;
   font-size: 16px;
@@ -323,7 +314,18 @@ th {
     grid-template-columns: 1fr;
   }
 
-  .strategi-icon {
-    margin-top: 0;
+  .strategi-box {
+    padding-top: 56px;
+  }
+
+  .strategy-icon {
+    width: 56px;
+    height: 56px;
+    top: -28px;
+  }
+
+  .strategy-icon img {
+    width: 34px;
+    height: 34px;
   }
 }
