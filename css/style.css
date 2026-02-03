@@ -251,24 +251,38 @@ th {
   color: #fff;
 }
 
-.strategi-icon {
-  width: 80px;
-  height: 80px;
-  background: #fff;
+/* ================= ICON STRATEGY ================= */
+.strategy-icon {
+  width: 64px;
+  height: 64px;
+  margin: -32px auto 12px;
+  background: #ffffff;
   border-radius: 50%;
-  margin: -60px auto 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  overflow: hidden; /* penting agar tetap rapi */
 }
 
-.strategi-icon img {
-  width: 48px;
+.strategy-icon img {
+  width: 40px;        /* ukuran asli ikon */
+  height: 40px;
+  object-fit: contain; /* INI KUNCI: tidak terpotong */
 }
 
-.strategi-icon img {
-  width: 42px;
-  height: auto;
+/* ===== MOBILE TUNING ===== */
+@media (max-width: 600px) {
+  .strategy-icon {
+    width: 56px;
+    height: 56px;
+    margin: -28px auto 10px;
+  }
+
+  .strategy-icon img {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 .strategi-box h3 {
