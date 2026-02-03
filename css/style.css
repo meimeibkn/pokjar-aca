@@ -233,12 +233,12 @@ th {
   gap: 20px;
 }
 
-/* ================= STRATEGI BOX (PARENT WAJIB) ================= */
+/* ================= STRATEGI BOX ================= */
 .strategi-box {
-  position: relative;              /* 🔴 INI KUNCI UTAMA */
+  position: relative;          /* WAJIB */
   border-radius: 16px;
-  overflow: visible;               /* icon boleh keluar card */
-  padding: 64px 20px 20px;         /* ruang icon di atas */
+  overflow: visible;
+  padding: 64px 20px 20px;     /* ruang icon */
 }
 
 /* WARNA */
@@ -252,12 +252,12 @@ th {
   color: #ffffff;
 }
 
-/* ================= ICON STRATEGY (CENTER FIX) ================= */
-.strategy-icon {
+/* ================= ICON (FIX TENGAH) ================= */
+.strategi-icon {
   position: absolute;
   top: -32px;
   left: 50%;
-  transform: translateX(-50%);     /* CENTER HORIZONTAL */
+  transform: translateX(-50%);
 
   width: 64px;
   height: 64px;
@@ -272,10 +272,10 @@ th {
   z-index: 10;
 }
 
-.strategy-icon img {
+.strategi-icon img {
   width: 40px;
   height: 40px;
-  object-fit: contain;             /* icon tidak terpotong */
+  object-fit: contain;
 }
 
 /* ================= TEXT ================= */
@@ -318,13 +318,13 @@ th {
     padding-top: 56px;
   }
 
-  .strategy-icon {
+  .strategi-icon {
     width: 56px;
     height: 56px;
     top: -28px;
   }
 
-  .strategy-icon img {
+  .strategi-icon img {
     width: 34px;
     height: 34px;
   }
