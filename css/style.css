@@ -226,3 +226,82 @@ th {
     padding: 6px 14px;
   }
 }
+/* ================= STRATEGI BELAJAR ================= */
+.strategi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.strategi-box {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f2f4f7;
+  padding: 20px;
+  position: relative;
+}
+
+.strategi-box.dark {
+  background: #192f52;
+  color: #fff;
+}
+
+.strategi-box.blue {
+  background: #2c6ba0;
+  color: #fff;
+}
+
+.strategi-icon {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border-radius: 50%;
+  margin: -60px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strategi-icon img {
+  width: 48px;
+}
+
+.strategi-box h3 {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.strategi-box h4 {
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.strategi-box ul {
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.strategi-box ul li {
+  margin-bottom: 4px;
+}
+
+.strategi-box .tips {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .strategi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .strategi-icon {
+    margin-top: 0;
+  }
+}
