@@ -252,20 +252,19 @@ th {
 }
 /* ================= ICON STRATEGY ================= */
 .strategy-icon {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 64px;
   height: 64px;
-  margin: -32px auto 12px;
   background: #ffffff;
-  border-radius: 18%;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  overflow: hidden; /* penting agar tetap rapi */
-  position: absolute;
-  padding-top: 64px;
-  left: 50;
-  right: 0;
+  z-index: 2;
 }
 
 .strategy-icon img {
