@@ -250,50 +250,40 @@ th {
   background: #2c6ba0;
   color: #fff;
 }
-
-
-
-/* ================= ICON POSITION FIX ================= */
+/* ================= ICON STRATEGY ================= */
 .strategy-icon {
-  position: absolute;
-  top: -32px;               /* naik setengah ukuran icon */
-  left: 50%;
-  transform: translateX(-50%);
-  
   width: 64px;
   height: 64px;
+  margin: -32px auto 12px;
   background: #ffffff;
   border-radius: 50%;
-  
   display: flex;
   align-items: center;
   justify-content: center;
-
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  z-index: 2;
+  overflow: hidden; /* penting agar tetap rapi */
+  position: relative;
+  left: 50;
+  right: 0;
 }
 
 .strategy-icon img {
-  width: 40px;
+  width: 40px;        /* ukuran asli ikon */
   height: 40px;
-  object-fit: contain;
+  object-fit: contain; /* INI KUNCI: tidak terpotong */
 }
 
-/* ================= MOBILE ================= */
+/* ===== MOBILE TUNING ===== */
 @media (max-width: 600px) {
-  .strategy-card {
-    padding-top: 56px;
-  }
-
   .strategy-icon {
     width: 56px;
     height: 56px;
-    top: -28px;
+    margin: -28px auto 10px;
   }
 
   .strategy-icon img {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
   }
 }
 
