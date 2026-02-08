@@ -208,12 +208,7 @@ th {
   }
 }
 /* ================= MOBILE HERO TYPOGRAPHY FIX ================= */
-@media (max-width: 600px) {
 
-  .hero-logo {
-    width: 64px;          /* logo lebih kecil & proporsional */
-    margin-bottom: 12px;
-  }
 
   .hero h1 {
     font-size: 26px;      /* ⬅️ ini yang bikin mirip gambar 2 */
@@ -460,20 +455,6 @@ th {
   text-align: center;
 }
 
-/* LOGO */
-
-.logo-wrapper {
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.08);
-  margin-bottom: 18px;
-}
-
-.hero-logo {
-  width: 110px;
-  display: block;
-}
 
 /* TITLE */
 
@@ -555,8 +536,15 @@ th {
     padding: 22px;
   }
 
-  .hero-logo {
-    width: 96px;
-  }
+.logo-wrapper {
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  margin-bottom: 16px;
+}
 
+.hero-logo {
+  width: 110px;
+  display: block;
 }
