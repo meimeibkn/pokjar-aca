@@ -180,3 +180,6 @@ body{
 .input-card button:hover{
   transform:translateY(-1px);
 }
+.hero-logo{
+  transform: translateX(-10px);
+}
