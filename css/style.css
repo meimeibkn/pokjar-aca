@@ -151,3 +151,32 @@ body{
   width: 220px;        /* sengaja lebih besar */
   margin-left: -40px; /* geser biar tengah */
 }
+/* FINAL POLISH */
+
+.logo-wrapper{
+  margin-bottom:22px;
+}
+
+.input-card{
+  margin-top:6px;
+}
+
+.hero h1{
+  margin-top:4px;
+}
+
+.badge{
+  margin-bottom:26px;
+}
+
+.input-card input::placeholder{
+  color:#aaa;
+}
+
+.input-card button{
+  transition:.2s ease;
+}
+
+.input-card button:hover{
+  transform:translateY(-1px);
+}
