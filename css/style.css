@@ -449,3 +449,79 @@ th {
     font-size: 13px;
   }
 }
+/* ===== LOGIN CARD ===== */
+
+.input-card {
+  margin-top: 28px;
+  background: #fff;
+  padding: 28px 26px;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.12);
+  max-width: 360px;
+  width: 100%;
+}
+
+.input-card h2 {
+  font-size: 18px;
+  margin-bottom: 14px;
+  color: #192f52;
+}
+
+.input-card input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.input-card input:focus {
+  outline: none;
+  border-color: #2c6ba0;
+}
+
+.input-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg,#2c6ba0,#192f52);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.input-card button:hover {
+  opacity: .9;
+}
+
+/* hero center fix */
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-logo {
+  width: 120px;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.badge {
+  margin-bottom: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+  .input-card{
+    padding:22px;
+  }
+}
