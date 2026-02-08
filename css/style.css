@@ -138,3 +138,16 @@ body{
 }
 
 }
+.logo-wrapper {
+  width: 140px;
+  height: 140px;
+  overflow: hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.hero-logo {
+  width: 220px;        /* sengaja lebih besar */
+  margin-left: -40px; /* geser biar tengah */
+}
