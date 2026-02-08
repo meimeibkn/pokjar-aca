@@ -449,23 +449,68 @@ th {
     font-size: 13px;
   }
 }
-/* ===== LOGIN CARD ===== */
+/* ================= CLEAN LOGIN PAGE ================= */
+
+/* CENTER CONTENT */
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* LOGO */
+
+.logo-wrapper {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  margin-bottom: 18px;
+}
+
+.hero-logo {
+  width: 110px;
+  display: block;
+}
+
+/* TITLE */
+
+.hero h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #192f52;
+}
+
+/* BADGE */
+
+.badge {
+  margin-bottom: 18px;
+  background: #1f4d7a;
+}
+
+/* LOGIN CARD */
 
 .input-card {
-  margin-top: 28px;
-  background: #fff;
-  padding: 28px 26px;
-  border-radius: 18px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.12);
+  background: #ffffff;
+  padding: 26px 24px;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
   max-width: 360px;
   width: 100%;
 }
+
+/* HEADING */
 
 .input-card h2 {
   font-size: 18px;
   margin-bottom: 14px;
   color: #192f52;
 }
+
+/* INPUT */
 
 .input-card input {
   width: 100%;
@@ -481,13 +526,15 @@ th {
   border-color: #2c6ba0;
 }
 
+/* BUTTON */
+
 .input-card button {
   width: 100%;
   padding: 12px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg,#2c6ba0,#192f52);
-  color: white;
+  background: #1f4d7a;
+  color: #ffffff;
   font-weight: 600;
   cursor: pointer;
 }
@@ -496,57 +543,20 @@ th {
   opacity: .9;
 }
 
-/* hero center fix */
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hero-logo {
-  width: 120px;
-  margin-bottom: 14px;
-}
-
-.hero h1 {
-  font-size: 28px;
-  margin-bottom: 6px;
-}
-
-.badge {
-  margin-bottom: 12px;
-}
-
 /* MOBILE */
 
 @media(max-width:600px){
-  .input-card{
-    padding:22px;
+
+  .hero h1 {
+    font-size: 24px;
   }
-}
 
-
-/* kecilkan di mobile */
-
-@media(max-width:600px){
-  .hero-logo{
-    padding:14px;
-    border-radius:20px;
+  .input-card {
+    padding: 22px;
   }
-}
-/* CLEAN LOGO STYLE */
 
-.logo-wrapper {
-  background: white;
-  padding: 16px;
-  border-radius: 18px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.08);
-  margin-bottom: 16px;
-}
+  .hero-logo {
+    width: 96px;
+  }
 
-.hero-logo {
-  width: 110px;
-  display: block;
 }
-
