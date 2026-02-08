@@ -525,3 +525,22 @@ th {
     padding:22px;
   }
 }
+/* ===== LOGO CARD STYLE ===== */
+
+.hero-logo {
+  background: white;
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+  margin-bottom: 18px;
+}
+
+/* kecilkan di mobile */
+
+@media(max-width:600px){
+  .hero-logo{
+    padding:14px;
+    border-radius:20px;
+  }
+}
