@@ -564,3 +564,32 @@ th {
 .hero-content {
   margin-top: -40px;
 }
+/* ===== LOGO WRAPPER FIX ===== */
+
+.logo-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 26px;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.12),
+    0 0 32px rgba(44,107,160,.25);
+  margin-bottom: 18px;
+}
+
+/* logo image */
+.hero-logo {
+  width: 120px;
+  display: block;
+}
+
+/* floating animation */
+
+@keyframes floatLogo {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+.logo-wrapper {
+  animation: floatLogo 4s ease-in-out infinite;
+}
