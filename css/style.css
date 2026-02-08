@@ -525,16 +525,7 @@ th {
     padding:22px;
   }
 }
-/* ===== LOGO CARD STYLE ===== */
 
-.hero-logo {
-  background: white;
-  padding: 18px;
-  border-radius: 24px;
-  border: 1px solid rgba(0,0,0,.06);
-  box-shadow: 0 12px 28px rgba(0,0,0,.12);
-  margin-bottom: 18px;
-}
 
 /* kecilkan di mobile */
 
@@ -544,52 +535,18 @@ th {
     border-radius:20px;
   }
 }
-/* ===== LOGO POLISH PRO ===== */
-
-@keyframes floatLogo {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
-}
-
-.hero-logo {
-  animation: floatLogo 4s ease-in-out infinite;
-}
-.hero-logo {
-  box-shadow:
-    0 12px 28px rgba(0,0,0,.12),
-    0 0 0 4px rgba(44,107,160,.08),
-    0 0 32px rgba(44,107,160,.25);
-}
-.hero-content {
-  margin-top: -40px;
-}
-/* ===== LOGO WRAPPER FIX ===== */
+/* CLEAN LOGO STYLE */
 
 .logo-wrapper {
   background: white;
-  padding: 20px;
-  border-radius: 26px;
-  box-shadow:
-    0 12px 28px rgba(0,0,0,.12),
-    0 0 32px rgba(44,107,160,.25);
-  margin-bottom: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  margin-bottom: 16px;
 }
 
-/* logo image */
 .hero-logo {
-  width: 120px;
+  width: 110px;
   display: block;
 }
 
-/* floating animation */
-
-@keyframes floatLogo {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
-}
-
-.logo-wrapper {
-  animation: floatLogo 4s ease-in-out infinite;
-}
