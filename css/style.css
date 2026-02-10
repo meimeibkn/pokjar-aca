@@ -273,3 +273,58 @@ body {
     font-size: 13px;
   }
 }
+/* ================= JADWAL POKJAR ================= */
+
+.jadwal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.jadwal-box {
+  background: #192f52;
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 18px 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.jadwal-box h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.jadwal-box p {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+  .jadwal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .jadwal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jadwal-box {
+    padding: 20px;
+  }
+
+  .jadwal-box h3 {
+    font-size: 16px;
+  }
+
+  .jadwal-box p {
+    font-size: 14px;
+  }
+}
