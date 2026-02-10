@@ -1,185 +1,275 @@
 /* ================= RESET ================= */
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:"Segoe UI",Arial,sans-serif;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-body{
-  background:#fff;
-  color:#000;
+body {
+  background: #ffffff;
+  color: #000;
+}
+/* ================= LOGIN PAGE ================= */
+
+.page-login .hero {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #a1c2fd 0%, #ffffff 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
 }
 
-/* ================= HERO LOGIN ================= */
-
-.hero{
-  min-height:100vh;
-  background:linear-gradient(180deg,#a1c2fd 0%,#ffffff 100%);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:40px 20px;
+.page-login .hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.hero-content{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-}
-
-/* ================= LOGO ================= */
-
-.logo-wrapper{
-  background:#fff;
-  padding:16px;
-  border-radius:16px;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
-  margin-bottom:18px;
-}
-
-.hero-logo{
-  width:110px;
-  display:block;
-}
-
-/* ================= TITLE ================= */
-
-.hero h1{
-  font-size:26px;
-  font-weight:600;
-  color:#192f52;
-  margin-bottom:8px;
-}
-
-/* ================= BADGE ================= */
-
-.badge{
-  background:#1f4d7a;
-  color:white;
-  padding:8px 18px;
-  border-radius:999px;
-  font-size:13px;
-  font-weight:600;
-  margin-bottom:20px;
-}
-
-/* ================= LOGIN CARD ================= */
-
-.input-card{
-  background:white;
-  padding:26px 24px;
-  border-radius:16px;
-  box-shadow:0 12px 28px rgba(0,0,0,.08);
-  max-width:360px;
-  width:100%;
-}
-
-.input-card h2{
-  font-size:18px;
-  margin-bottom:14px;
-  color:#192f52;
-}
-
-/* INPUT */
-
-.input-card input{
-  width:100%;
-  padding:12px 14px;
-  border-radius:10px;
-  border:1px solid #ddd;
-  margin-bottom:14px;
-  font-size:14px;
-}
-
-.input-card input:focus{
-  outline:none;
-  border-color:#2c6ba0;
-}
-
-/* BUTTON */
-
-.input-card button{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:none;
-  background:#1f4d7a;
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.input-card button:hover{
-  opacity:.9;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:600px){
-
-.hero{
-  padding:32px 16px;
-  align-items:flex-start;
-}
-
-.hero h1{
-  font-size:24px;
-}
-
-.hero-logo{
-  width:96px;
-}
-
-.input-card{
-  padding:22px;
-}
-
-}
-.logo-wrapper {
+/* LOGO */
+.page-login .logo-wrapper {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  margin-bottom: 18px;
   width: 140px;
   height: 140px;
-  overflow: hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-logo {
-  width: 220px;        /* sengaja lebih besar */
-  margin-left: -40px; /* geser biar tengah */
-}
-/* FINAL POLISH */
-
-.logo-wrapper{
-  margin-bottom:22px;
+.page-login .hero-logo {
+  width: 100px;
+  display: block;
 }
 
-.input-card{
-  margin-top:6px;
+/* TITLE */
+.page-login .hero h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #192f52;
+  margin-bottom: 8px;
 }
 
-.hero h1{
-  margin-top:4px;
+/* BADGE */
+.page-login .badge {
+  background: #1f4d7a;
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 22px;
 }
 
-.badge{
-  margin-bottom:26px;
+/* INPUT CARD */
+.page-login .input-card {
+  background: #ffffff;
+  padding: 26px 24px;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  max-width: 360px;
+  width: 100%;
 }
 
-.input-card input::placeholder{
-  color:#aaa;
+.page-login .input-card h2 {
+  font-size: 18px;
+  margin-bottom: 14px;
+  color: #192f52;
 }
 
-.input-card button{
-  transition:.2s ease;
+.page-login .input-card input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+  font-size: 14px;
 }
 
-.input-card button:hover{
-  transform:translateY(-1px);
+.page-login .input-card input:focus {
+  outline: none;
+  border-color: #2c6ba0;
 }
-.hero-logo{
-  transform: translateX(-10px);
+
+.page-login .input-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #1f4d7a;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.page-login .input-card button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* MOBILE LOGIN */
+@media (max-width: 600px) {
+  .page-login .hero {
+    padding: 32px 16px;
+    align-items: flex-start;
+  }
+
+  .page-login .hero h1 {
+    font-size: 24px;
+  }
+
+  .page-login .hero-logo {
+    width: 90px;
+  }
+
+  .page-login .input-card {
+    padding: 22px;
+  }
+}
+/* ================= HASIL PAGE ================= */
+
+.page-hasil .hero {
+  min-height: auto;
+  padding: 48px 20px;
+  background: linear-gradient(180deg, #a1c2fd 0%, #ffffff 100%);
+  text-align: center;
+}
+
+.page-hasil .hero h1 {
+  font-size: 32px;
+  color: #192f52;
+  margin-bottom: 12px;
+}
+
+.page-hasil .badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2c6ba0, #192f52);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* CONTAINER */
+.page-hasil .hasil-container {
+  max-width: 900px;
+  margin: -40px auto 40px;
+  padding: 0 20px;
+}
+
+/* CARD */
+.page-hasil .card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+}
+
+.page-hasil .card h2 {
+  color: #192f52;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+/* GRID */
+.page-hasil .grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.page-hasil .grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+/* STAT */
+.page-hasil .stat {
+  background: #f4f7ff;
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.page-hasil .stat-label {
+  font-size: 14px;
+  color: #2c6ba0;
+}
+
+.page-hasil .stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #192f52;
+}
+
+/* TABLE */
+.page-hasil .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.page-hasil table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.page-hasil thead {
+  background: #f0f4ff;
+}
+
+.page-hasil th,
+.page-hasil td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.page-hasil th {
+  color: #192f52;
+  font-weight: 600;
+}
+
+/* BADGE NILAI */
+.page-hasil .badge-nilai {
+  display: inline-block;
+  background: linear-gradient(135deg, #2c6ba0, #192f52);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* MOBILE HASIL */
+@media (max-width: 768px) {
+  .page-hasil .grid-2,
+  .page-hasil .grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-hasil .hero {
+    padding: 32px 16px;
+  }
+
+  .page-hasil .card {
+    padding: 20px;
+  }
+
+  .page-hasil table {
+    font-size: 13px;
+  }
 }
